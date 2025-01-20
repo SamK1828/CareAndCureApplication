@@ -1,0 +1,2 @@
+# CareAndCureApplication
+ The Care and Cure Hospital System is an advanced healthcare management application designed to streamline the operations of a hospital or clinic. This system aims to enhance efficiency in patient care, manage doctor schedules, process billing seamlessly, and handle appointments effectively. It caters to the needs of patients, doctors, and administrators by providing tailored functionalities for each role, ensuring a smooth and automated workflow.
