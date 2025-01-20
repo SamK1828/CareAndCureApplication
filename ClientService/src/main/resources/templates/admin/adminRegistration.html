@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Registration Form</title>
+    <style>
+      /* Reset and Base Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Background Styling with Gradient */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #85d7f4, #d4eff7);
+        color: #333333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      /* Card Styling */
+      .form-container {
+        background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)),
+          url("https://t4.ftcdn.net/jpg/02/55/77/03/360_F_255770374_rbmJO9gkkIhMBcyVPc3iW016BCLDvcWc.jpg")
+            no-repeat center center/cover;
+        width: 100%;
+        max-width: 600px;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.6s ease-in-out;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .form-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Header Styling */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .form-container:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Header Styling */
+      h2 {
+        text-align: center;
+        font-size: 32px;
+        color: #ffffff;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Subtitle */
+      .form-subtitle {
+        text-align: center;
+        font-size: 18px;
+        color: #ffffff;
+        margin-bottom: 25px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Table Layout for Fields */
+      table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+      }
+
+      table td {
+        padding: 8px 0;
+      }
+      label {
+        font-weight: bold;
+        color: #ffffff;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+      }
+
+      /* Input Fields Styling */
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      input[type="date"],
+      input[type="password"],
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #bdc3c7;
+        border-radius: 8px;
+        background: #f9f9f9;
+        font-size: 16px;
+        color: #1a1a1a;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="number"]:focus,
+      input[type="date"]:focus,
+      input[type="password"]:focus,
+      textarea:focus {
+        border-color: #0c1923;
+        background: #ffffff;
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      textarea {
+        resize: vertical;
+        height: 80px;
+      }
+
+      /* Gender Radio Buttons Styling */
+      input[type="radio"] {
+        margin-right: 8px;
+      }
+
+      label[for="male"],
+      label[for="female"] {
+        margin-right: 15px;
+        color: #e3e3e3;
+      }
+
+      /* Submit Button */
+      input[type="submit"] {
+        width: 100%;
+        padding: 12px 15px;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: all 0.5s ease;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      input[type="submit"]:hover {
+        background: linear-gradient(135deg, #00f2fe, #4facfe);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        transform: translateY(-3px);
+        
+      }
+      @keyframes fadeInUp {
+        from {
+          transform: translateY(40px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      /* Additional Buttons */
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px; 
+      }
+      .next-button {
+        /* margin-top: 10px; */
+        padding: 12px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #ff7eb3, #ff758c);
+        border: none;
+        color: #fff;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, background-color 0.3s ease,
+          box-shadow 0.3s ease,;
+          animation: fadeInUp 1s ease-out;
+      }
+
+      .next-button:hover {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Error Message Styling */
+      .error-message {
+        color: #e74c3c;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Admin Registration Form</h2>
+      <p class="form-subtitle">
+        Fill out the form below to register as a new admin.
+      </p>
+
+      <!-- Display Error Message Example -->
+      <div class="error-message" th:if="${error}">
+        <p th:text="${error}"></p>
+      </div>
+
+      <!-- Display validation errors (list) -->
+      <div
+        th:if="${validationErrors!=null and validationErrors.containsKey('error')}"
+      >
+        <p class="error-message" th:text="${validationErrors['error']}"></p>
+      </div>
+
+      <!-- Patient Registration Form -->
+      <form th:action="@{/registerAdmin}" th:object="${admin}" method="post">
+        <table>
+          <!-- Admin Name -->
+          <tr>
+            <td><label for="adminName">Admin Name:</label></td>
+            <td>
+              <input
+                type="text"
+                id="adminName"
+                th:field="*{name}"
+                placeholder="Enter Admin Name"
+                required
+              />
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('name')}"
+              >
+                <p th:text="${validationErrors['name']}"></p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Username -->
+          <tr>
+            <td><label for="username">Username :</label></td>
+            <td>
+              <input
+                type="text"
+                id="username"
+                th:field="*{username}"
+                placeholder="Enter username"
+                required
+              />
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('username')}"
+              >
+                <p th:text="${validationErrors['username']}"></p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Email -->
+          <tr>
+            <td><label for="email">Email :</label></td>
+            <td>
+              <input
+                type="email"
+                id="email"
+                th:field="*{email}"
+                placeholder="Enter email here"
+                required
+              />
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('email')}"
+              >
+                <p th:text="${validationErrors['email']}"></p>
+              </div>
+            </td>
+          </tr>
+          <!-- Submit Button -->
+          <tr>
+            <td colspan="2">
+              <input type="submit" value="Register" />
+            </td>
+          </tr>
+          <!-- Home Page Button -->
+          <tr>
+            <td colspan="3" style="text-align: center">
+              <button
+                class="next-button"
+                onclick="window.location.href='/adminHomePage'"
+              >
+                Go to Home Page
+              </button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </body>
+</html>

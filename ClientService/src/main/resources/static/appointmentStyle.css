@@ -1,0 +1,156 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f4f8;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 100vh;
+}
+
+.header-container {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    background-color: #6b5b95;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 1.8em;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    flex: 1 1 300px;
+    background-color: #6b5b95;
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-button {
+    background-color: #805ad5;
+    color: white;
+    font-size: 1.1em;
+    padding: 10px 15px;
+    margin: 10px 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    width: 90%;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.sidebar-button:hover {
+    background-color: #6b46c1;
+}
+
+/* Content Section Styling */
+.content {
+    flex: 2 1 600px;
+    padding: 20px;
+    background-color: white;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.appointment {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.appointment-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.appointment-details {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+/* Success Message Notification */
+.success-message {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 1.6em;
+        padding: 10px 15px;
+    }
+
+    .sidebar-button {
+        font-size: 1em;
+        padding: 8px 12px;
+    }
+
+    .content p {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .content {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .sidebar-button {
+        font-size: 1em;
+        padding: 10px 15px;
+    }
+
+    h1 {
+        font-size: 1.4em;
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar-button {
+        font-size: 0.9em;
+        padding: 8px 10px;
+    }
+
+    h1 {
+        font-size: 1.2em;
+        padding: 8px 10px;
+    }
+
+    .content p {
+        font-size: 0.85em;
+    }
+}

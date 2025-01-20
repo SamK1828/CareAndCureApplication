@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment</title>
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #4a4a4a;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input, select, button, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #3f51b5;
+            box-shadow: 0 0 5px rgba(63, 81, 181, 0.2);
+        }
+
+        button {
+            background-color: #3f51b5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #303f9f;
+        }
+
+        .back-button {
+            background-color: #e0e0e0;
+            color: #333;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .back-button:hover {
+            background-color: #d6d6d6;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+
+        .error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            input, button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reschedule Your Appointment</h1>
+
+        <!-- Success/Error Message -->
+        <div th:if="${success}" class="message success">
+            <p th:text="${successMessage}"></p>
+        </div>
+        <div th:if="${error}" class="message error">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <!-- Reschedule Form -->
+        <form method="POST" th:action="@{/patient/{patientId}/appointments/reschedule/{appointmentId}(patientId=${patientId},appointmentId=${appointmentId})}">
+            <div class="form-group">
+                <label for="appointmentDate">New Appointment Date</label>
+                <input type="date" id="appointmentDate" name="newDate" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="appointmentTime">New Appointment Time</label>
+                <input type="time" id="appointmentTime" name="newTime" required>
+            </div>
+        
+            <button type="submit">Confirm Reschedule</button>
+        </form>
+
+        <!-- Back to Management Button -->
+        <a th:href="@{/patient/{patientId}/appointments}">
+            <button class="back-button">Back to Appointment Management</button>
+        </a>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment</title>
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input, select, button, textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #6b5b95;
+        }
+
+        button {
+            background-color: #6b5b95;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #5a4b8c;
+        }
+
+        .back-button {
+            background-color: #ddd;
+            color: #333;
+            margin-top: 15px;
+        }
+
+        .back-button:hover {
+            background-color: #ccc;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive Styling */
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .form-group {
+                margin-bottom: 12px;
+            }
+
+            button {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Reschedule Your Appointment</h1>
+
+        
+        <div th:if="${success}" class="message success">
+            <p th:text="${successMessage}"></p>
+        </div>
+        <div th:if="${error}" class="message error">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        
+        <form method="POST" th:action="@{/patient/{patientId}/appointments/reschedule/{appointmentId}(patientId=${patientId},appointmentId=${appointmentId})}">
+            <div class="form-group">
+                <label for="appointmentDate">New Appointment Date</label>
+                <input type="date" id="appointmentDate" name="newDate" required>
+            </div>
+        
+            <div class="form-group">
+                <label for="appointmentTime">New Appointment Time</label>
+                <input type="time" id="appointmentTime" name="newTime" required>
+            </div>
+        
+            <button type="submit">Confirm Reschedule</button>
+        </form>
+        
+
+        
+        <a th:href="@{/patient/{patientId}/appointments(patientId=${patientId})}">
+            <button class="back-button">Back to Appointment Management</button>
+        </a>
+    </div>
+
+</body>
+</html> -->

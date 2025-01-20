@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<title>Appointment Cancellation</title>
+	<style>
+		body {
+		    margin: 0;
+		    padding: 0;
+		    font-family: Arial, sans-serif;
+		    background-color: #f4f4f9; /* Light gray background for better contrast */
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    height: 100vh; /* Full viewport height */
+		}
+
+		div {
+		    text-align: center; /* Center text inside the div */
+		    background-color: #ffffff; /* White background for the message box */
+		    padding: 30px;
+		    border-radius: 10px; /* Rounded corners */
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for a 3D effect */
+		    max-width: 400px; /* Limit the width */
+		    width: 90%; /* Responsive design for smaller screens */
+		}
+
+		h1 {
+		    color: #f44336; /* Red for cancellation */
+		    margin-bottom: 20px;
+		}
+
+		p {
+		    color: #333; /* Dark gray text */
+		    margin-bottom: 10px;
+		    font-size: 16px;
+		}
+
+		span {
+		    font-weight: bold; /* Bold text for dynamic values */
+		}
+
+		button {
+		    margin-top: 20px;
+		    padding: 10px 20px;
+		    background-color: #f44336; /* Red button for cancellation */
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    font-size: 16px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		}
+
+		button:hover {
+		    background-color: #e53935; /* Slightly darker red on hover */
+		}
+
+	</style>
+</head>
+
+<body>
+	<div>
+		<h1>Appointment Cancelled Successfully</h1>
+		<p th:text="${appointment}">Your appointment has been successfully cancelled.</p>
+		<p>Thank you for using our service!</p>
+		
+		<button th:if="${userRole=='patient'}" id="backButton" class="sidebar-button"
+		th:onclick="|window.location.href='/patient/${patientId}/appointments'|">Back to Management</button>
+		<button th:if="${userRole=='admin'}" id="backButton" class="sidebar-button"
+		onclick="history.back()"></button>
+	</div>
+
+</body>
+
+</html>

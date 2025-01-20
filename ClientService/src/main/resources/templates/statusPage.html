@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Status</title>
+	<style>
+		/* Base Reset */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		/* Body Styling */
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			background: linear-gradient(135deg, #85d7f4, #d4eff7);
+			color: #333;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-height: 100vh;
+			padding: 20px;
+		}
+
+		/* Main Container */
+		.container {
+			max-width: 500px;
+			background: #ffffff;
+			border-radius: 12px;
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+			padding: 25px;
+			text-align: center;
+			animation: fadeIn 0.6s ease-in-out;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(-20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* Header */
+		h1 {
+			font-size: 28px;
+			font-weight: bold;
+			color: #2c3e50;
+			margin-bottom: 20px;
+			text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+		}
+
+		/* Styled Messages */
+		.error-message {
+			color: #e74c3c;
+			font-size: 18px;
+			font-weight: bold;
+			margin: 10px 0;
+		}
+
+		.success-message {
+			color: #43aa8b;
+			font-size: 18px;
+			font-weight: bold;
+			margin: 10px 0;
+		}
+
+		/* User Details Styling */
+		.details-container {
+			margin: 15px 0;
+			background: #f9f9f9;
+			border-radius: 8px;
+			padding: 15px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+			font-size: 16px;
+			line-height: 1.8;
+			color: #34495e;
+		}
+
+		.details-container strong {
+			color: #2c3e50;
+		}
+
+		/* Buttons */
+		.button-container {
+			display: flex;
+			justify-content: center;
+			gap: 10px;
+			margin-top: 20px;
+		}
+
+		.next-button {
+			padding: 12px 20px;
+			font-size: 16px;
+			font-weight: bold;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			color: #ffffff;
+			background: linear-gradient(135deg, #3498db, #85d7f4);
+			transition: all 0.3s ease;
+			text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+			box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+		}
+
+		.next-button:hover {
+			background: linear-gradient(135deg, #85d7f4, #3498db);
+			transform: translateY(-2px);
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+		}
+
+		/* Responsive Design */
+		@media (max-width: 768px) {
+			.container {
+				padding: 20px;
+			}
+
+			h1 {
+				font-size: 24px;
+			}
+
+			.details-container {
+				font-size: 14px;
+			}
+
+			.next-button {
+				font-size: 14px;
+				padding: 10px 15px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<!-- Page Title -->
+		<h1> Status</h1>
+
+		<!-- Conditional Display with Styled Messages -->
+		<div>
+			<!-- Error Message -->
+			<p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
+
+			<!-- Field-specific validation errors -->
+			<div th:if="${validationErrors}" style="color: red;">
+				<h3>Validation Errors:</h3>
+				<ul>
+					<li th:each="entry : ${validationErrors}">
+						<span th:text="${entry.key}"></span>: <span th:text="${entry.value}"></span>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Patient Success Message -->
+			<div th:if="${message}" class="details-container">
+				<p class="success-message">[[${message}]]</p>
+				<div>
+					<strong>Patient Name:</strong> [[${patientName}]]
+				</div>
+				<div>
+					<strong>Patient ID:</strong> [[${patientId}]]
+				</div>
+			</div>
+
+			<!-- Admin Success Message -->
+			<div th:if="${admin}" class="details-container">
+				<p class="success-message">Admin Registered Successfully</p>
+				<div>
+					<strong>Admin Username:</strong> [[${username}]]
+				</div>
+				<div>
+					<strong>Email:</strong> [[${email}]]
+				</div>
+				<em>Check Your mail for login details.</em>
+			</div>
+		</div>
+		
+
+		<!-- Navigation Buttons -->
+		<div class="button-container">
+			<button class="next-button" th:if="${userRole == 'admin'}" th:onclick="|window.location.href='/adminPage'|">
+				Go to Admin Page
+			</button>
+
+			<button type="button" class="next-button" onclick="history.back()">
+				Back
+			</button>
+		</div>
+	</div>
+</body>
+
+</html>

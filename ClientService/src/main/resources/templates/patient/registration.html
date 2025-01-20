@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Registration Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <style>
+      /* Reset and Base Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Background Styling with Gradient */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(120deg, #69b3f4, #66f0f7);
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      /* Card Styling */
+      .form-container {
+        background: #ffffff;
+        width: 100%;
+        max-width: 600px;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.6s ease-in-out;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .form-container:hover {
+        transform: scale(1.02);
+      }
+
+      /* Header Styling */
+      h2 {
+        text-align: center;
+        font-size: 28px;
+        color: #2c3e50;
+        margin-bottom: 15px;
+      }
+
+      /* Subtitle */
+      .form-subtitle {
+        text-align: center;
+        font-size: 16px;
+        color: #7f8c8d;
+        margin-bottom: 25px;
+      }
+
+      /* Table Layout for Fields */
+      table {
+        width: 100%;
+        margin-bottom: 15px;
+        border-collapse: separate;
+        border-spacing: 0 15px;
+      }
+
+      table td {
+        padding: 15px 0;
+        vertical-align: top;
+      }
+
+      label {
+        font-weight: bold;
+        color: #34495e;
+      }
+
+      /* Input Fields Styling */
+      input[type="text"],
+      input[type="email"],
+      input[type="number"],
+      input[type="date"],
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 8px;
+        background: #f9f9f9;
+        font-size: 16px;
+        color: #34495e;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="number"]:focus,
+      input[type="date"]:focus,
+      textarea:focus {
+        border-color: #4facfe;
+        background: #ffffff;
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      textarea {
+        resize: vertical;
+        height: 80px;
+      }
+
+      /* Gender Radio Buttons Styling */
+      input[type="radio"] {
+        margin-right: 8px;
+      }
+
+      label[for="male"],
+      label[for="female"] {
+        margin-right: 15px;
+        color: #34495e;
+      }
+
+      /* Submit Button */
+      input[type="submit"] {
+        width: 100%;
+        padding: 12px 15px;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: all 0.3s ease;
+      }
+
+      input[type="submit"]:hover {
+        background: linear-gradient(135deg, #00f2fe, #4facfe);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Additional Buttons */
+      .button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .next-button {
+        margin-top: 20px;
+        padding: 12px 25px;
+        font-size: 16px;
+        font-weight: bold;
+        background: linear-gradient(135deg, #ff7eb3, #ff758c);
+        border: none;
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition: transform 0.3s ease, background-color 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .next-button:hover {
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Error Message Styling */
+      .error-message {
+        color: #e74c3c;
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .button-group {
+        display: flex;
+        /* justify-content: space-between; */
+        gap: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="form-container">
+      <h2>Patient Registration Form</h2>
+      <p class="form-subtitle">
+        Fill out the form below to register a new patient.
+      </p>
+
+      <!-- Display Error Message Example -->
+      <div class="error-message" th:if="${error}">
+        <p th:text="${error}"></p>
+      </div>
+
+      <!-- Display validation errors (list) -->
+      <div
+        th:if="${validationErrors!=null and validationErrors.containsKey('error')}"
+      >
+        <p class="error-message" th:text="${validationErrors['error']}"></p>
+      </div>
+
+      <!-- Patient Registration Form -->
+      <form
+        th:action="@{/registerPatient}"
+        th:object="${patient}"
+        method="post"
+      >
+        <table>
+          <!-- Patient Name -->
+          <tr>
+            <td><label for="patientName">Patient Name:</label></td>
+            <td>
+              <input
+                type="text"
+                id="patientName"
+                th:field="*{patientName}"
+                placeholder="Enter Patient Name"
+              />
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('patientName')}"
+              >
+                <p th:text="${validationErrors['patientName']}"></p>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Email Address -->
+          <tr>
+            <td><label for="emailId">Email Address:</label></td>
+            <td>
+              <input
+                type="email"
+                id="emailId"
+                th:field="*{emailId}"
+                placeholder="Enter a valid email address"
+              />
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('emailId')}"
+              >
+                <p th:text="${validationErrors['emailId']}"></p>
+              </div>
+            </td>
+            <!-- <td
+              class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('emailId')}"
+            >
+              <p th:text="${validationErrors['emailId']}"></p>
+            </td> -->
+          </tr>
+
+          <!-- Contact Number -->
+          <tr>
+            <td><label for="contactNumber">Contact:</label></td>
+            <td>
+              <input
+                type="text"
+                id="contactNumber"
+                th:field="*{contactNumber}"
+                placeholder="Enter Contact Number"
+              />
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('contactNumber')}"
+              >
+                <p th:text="${validationErrors['contactNumber']}"></p>
+              </div>
+            </td>
+            <!-- <td
+              class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('contactNumber')}"
+            >
+              <p th:text="${validationErrors['contactNumber']}"></p>
+            </td> -->
+          </tr>
+
+          <!-- Age -->
+          <tr>
+            <td><label for="age">Age:</label></td>
+            <td>
+              <input
+                type="number"
+                id="age"
+                th:field="*{age}"
+                placeholder="Enter the Age"
+              />
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('age')}"
+              >
+                <p th:text="${validationErrors['age']}"></p>
+              </div>
+            </td>
+            <!-- <td
+              class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('age')}"
+            >
+              <p th:text="${validationErrors['age']}"></p>
+            </td> -->
+          </tr>
+
+          <!-- Gender -->
+          <tr>
+            <td><label>Gender:</label></td>
+            <td>
+              <input
+                type="radio"
+                id="male"
+                name="gender"
+                value="Male"
+                th:field="*{gender}"
+              />
+              <label for="male">Male</label>
+              <input
+                type="radio"
+                id="female"
+                name="gender"
+                value="Female"
+                th:field="*{gender}"
+              />
+              <label for="female">Female</label>
+              <div
+                class="error-message"
+                th:if="${validationErrors != null and validationErrors.containsKey('gender')}"
+              >
+                <p th:text="${validationErrors['gender']}"></p>
+              </div>
+            </td>
+            <!-- <td
+              class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('gender')}"
+            >
+              <p th:text="${validationErrors['gender']}"></p>
+            </td> -->
+          </tr>
+
+          <!-- Date of Birth -->
+          <tr>
+            <td><label for="dob">Date of Birth:</label></td>
+            <td>
+              <input
+                type="date"
+                id="dob"
+                th:field="*{dateOfBirth}"
+                placeholder="Select D.O.B."
+              />
+              <input type="hidden" id="patientDob" th:value="${#temporals.format(patient.dateOfBirth, 'yyyy-MM-dd')}">
+              <div
+              class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('dateOfBirth')}"
+            >
+              <p th:text="${validationErrors['dateOfBirth']}"></p>
+            </div>
+            </td>
+          </tr>
+
+          <!-- Address -->
+          <tr>
+            <td><label for="address">Address:</label></td>
+            <td>
+              <input
+                type="text"
+                id="address"
+                th:field="*{address}"
+                placeholder="Enter Address"
+              />
+              <div class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('address')}"
+            >
+              <p th:text="${validationErrors['address']}"></p></div>
+            </td>
+            <!-- <td
+              class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('address')}"
+            >
+              <p th:text="${validationErrors['address']}"></p>
+            </td> -->
+          </tr>
+
+          <!-- Allergies -->
+          <tr>
+            <td><label for="allergies">Allergies:</label></td>
+            <td>
+              <input
+                type="text"
+                id="allergies"
+                th:field="*{allergies}"
+                placeholder="Enter Allergies"
+              />
+            </td>
+          </tr>
+
+          <!-- Medications -->
+          <tr>
+            <td><label for="medications">Medications:</label></td>
+            <td>
+              <input
+                type="text"
+                id="medications"
+                th:field="*{medications}"
+                placeholder="Enter Medications"
+              />
+            </td>
+          </tr>
+
+          <!-- Treatments -->
+          <tr>
+            <td><label for="treatments">Treatments:</label></td>
+            <td>
+              <input
+                type="text"
+                id="treatments"
+                th:field="*{treatments}"
+                placeholder="Enter Treatments"
+              />
+            </td>
+          </tr>
+
+          <!-- Medical History -->
+          <tr>
+            <td><label for="medicalHistory">Medical History:</label></td>
+            <td>
+              <input
+                type="text"
+                id="medicalHistory"
+                th:field="*{medicalHistory}"
+                placeholder="Enter Medical Record"
+              />
+            </td>
+          </tr>
+
+          <!-- Insurance Details -->
+          <tr>
+            <td><label for="insurance">Insurance Details:</label></td>
+            <td>
+              <input
+                type="text"
+                id="insurance"
+                th:field="*{insuranceDetails}"
+                placeholder="Enter Insurance Details"
+              />
+            </td>
+          </tr>
+
+          <!-- Submit Button -->
+          <tr>
+            <td colspan="2">
+              <input type="submit" value="Register" />
+            </td>
+          </tr>
+        </table>
+      </form>
+
+      <!-- Additional Buttons -->
+      <div class="button-container">
+        <!-- <div class="button-group">
+          <button
+            class="next-button"
+            th:if="${userRole == 'admin'}"
+            th:onclick="|window.location.href='/adminPage'|"
+          >
+            Go to Admin Page
+          </button>
+
+          <button
+            class="next-button"
+            th:if="${userRole == 'patient'}"
+            th:onclick="|window.location.href='/patientHomePage'|"
+          >
+            Go to Patient Page
+          </button> -->
+          <button type="button" class="next-button" onclick="history.back()">Back</button>
+
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Include Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script> 
+   let dateOfBirth = document.getElementById('patientDob').value || "0000-00-00"; // Log the date for debugging console.log(dateOfBirth);
+
+        flatpickr('#dob', { 
+            dateFormat: 'Y-m-d', 
+            altInput: true, 
+            altFormat: 'd/m/Y', 
+            maxDate: 'today', 
+            minDate: '1900-01-01', 
+            defaultDate: dateOfBirth }); 
+</script>
+  </body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #85d7f4, #d4eff7);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Profile Container */
+        .profile-container {
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Profile Details */
+        .profile-details {
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+
+        .profile-details div {
+            font-size: 18px;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        .profile-details strong {
+            color: #2c3e50;
+        }
+
+        /* Buttons */
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-button,
+        .edit-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #3498db, #85d7f4);
+            color: #ffffff;
+            margin-right: 10px;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #85d7f4, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-button {
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            color: #ffffff;
+        }
+
+        .edit-button:hover {
+            background: linear-gradient(135deg, #f39c12, #e74c3c);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-details div {
+                font-size: 16px;
+            }
+
+            .back-button,
+            .edit-button {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="profile-container">
+
+         <!-- Profile Header -->
+        <div class="profile-header">
+            <h1>Admin Profile</h1>
+        </div>
+        <p class="error-message" th:if="${errorMessage}" th:text="${errorMessage}"></p>
+
+         <!-- Profile Details -->
+
+        <div class="profile-details">
+            <div><strong>Name:</strong> [[${admin.name}]]</div>
+            <div><strong>Username:</strong> [[${admin.username}]]</div>
+            <div><strong>Email:</strong> [[${admin.email}]]</div>
+            
+        </div>
+        <div class="button-container"> <button class="back-button"
+                onclick="window.location.href='/adminPage'">Back</button> </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Appointment</title>
+</head>
+<body>
+    <div class="container">
+        
+        <div class="sidebar">
+            <button id="backButton" class="sidebar-button" th:onclick="|window.location.href='/patient/${patientId}/appointments'|">Back to Management</button>
+        </div>
+
+        <div class="content">
+            <h2>Schedule Appointment</h2>
+
+            <!-- <div id="errorMessage" class="error-message" th:if="${errorMessage}">
+                <p th:text="${errorMessage}"></p>
+            </div> -->
+
+            <form id="appointmentForm" th:action="@{'/patient/'+${patientId}+'/appointments/schedule'}" th:object="${scheduleAppointmentDTO}" method="post">
+                <div class="form-group">
+                    <label for="patientId">Patient ID:</label>
+                    <input type="number" id="patientId" name="patientId" th:value="${patientId}" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label for="reason">Reason for Appointment:</label>
+                    <input type="text" id="reason" name="reason" th:field="*{reason}" placeholder="Enter reason" required />
+                </div>
+
+                <!-- Hidden input to store doctorId -->
+                <!-- <input type="hidden" id="doctorId" name="doctorId" />  Hidden field to store doctorId -->
+
+                <div class="form-group">
+                    <label for="doctorSelect">Select Doctor:</label>
+                    <select id="doctorSelect" name="doctorId" th:field="*{doctorId}" required>
+                        <option value="" disabled selected>Select a doctor</option>
+						<option th:each="doctor : ${doctors}" 
+						                th:value="${doctor.doctorId}" 
+						                th:text="${doctor.doctorName}">Doctor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="appointmentDate">Appointment Date:</label>
+                    <input type="date" id="appointmentDate" name="appointmentDate" th:field="*{appointmentDate}" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="appointmentTime">Appointment Time:</label>
+                    <input type="time" id="appointmentTime" name="appointmentTime" th:field="*{appointmentTime}" required />
+                </div>
+
+                <!-- <input type="hidden" name="status" th:field="*{status}" th:value="Scheduled" />   Default to Scheduled -->
+                <!-- <input type="hidden" name="reasonOfCancellation" th:field="*{reasonOfCancellation}" /> Default to null -->
+
+                <button type="submit" class="submit-button">Book Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        h2 {
+            color: #6b5b95;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Sidebar Styling */
+        .sidebar {
+            flex: 1;
+            background-color: #6b5b95;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-button {
+            background-color: #805ad5;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-button:hover {
+            background-color: #6b46c1;
+        }
+
+        /* Content Styling */
+        .content {
+            flex: 2;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: auto;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6b5b95;
+        }
+
+        input[readonly] {
+            background-color: #f0f4f8;
+            cursor: not-allowed;
+        }
+
+        .submit-button {
+            background-color: #6b5b95;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .submit-button:hover {
+            background-color: #805ad5;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+            }
+
+            .content {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.5em;
+            }
+
+            label {
+                font-size: 0.9em;
+            }
+
+            input,
+            select {
+                font-size: 0.85em;
+            }
+
+            .submit-button {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</body>
+</html>

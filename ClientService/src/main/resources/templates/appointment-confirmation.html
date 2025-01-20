@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="utf-8">
+	<title>Appointment Confirmation</title>
+	<style>
+		body {
+		    margin: 0;
+		    padding: 0;
+		    font-family: Arial, sans-serif;
+		    background-color: #f4f4f9; /* Light gray background for better contrast */
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    height: 100vh; /* Full viewport height */
+		}
+
+		div {
+		    text-align: center; /* Center text inside the div */
+		    background-color: #ffffff; /* White background for the message box */
+		    padding: 30px;
+		    border-radius: 10px; /* Rounded corners */
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow for a 3D effect */
+		    max-width: 400px; /* Limit the width */
+		    width: 90%; /* Responsive design for smaller screens */
+		}
+
+		h1 {
+		    color: #4CAF50; /* Green for success */
+		    margin-bottom: 20px;
+		}
+
+		p {
+		    color: #333; /* Dark gray text */
+		    margin-bottom: 10px;
+		    font-size: 16px;
+		}
+
+		span {
+		    font-weight: bold; /* Bold text for the values */
+		}
+
+		button {
+		    margin-top: 20px;
+		    padding: 10px 20px;
+		    background-color: #4CAF50; /* Green button */
+		    color: white;
+		    border: none;
+		    border-radius: 5px;
+		    font-size: 16px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		}
+
+		button:hover {
+		    background-color: #45a049; /* Slightly darker green on hover */
+		}
+
+	</style>
+</head>
+
+<body>
+	<div>
+		<h1>Appointment Scheduled Successfully</h1>
+		<p>Your appointment has been scheduled successfully. Here are the details:</p>
+		<p>Appointment ID: <span th:text="${appointment.appointmentId}"></span></p>
+		<p>Doctor ID: <span th:text="${appointment.doctorId}"></span></p>
+		<p>Patient ID: <span th:text="${patientId}"></span></p>
+		<p>Appointment Date: <span th:text="${appointment.appointmentDate}"></span></p>
+		<p>Appointment Time: <span th:text="${appointment.appointmentTime}"></span></p>
+		<p>Thank you for using our service!</p>
+		<button th:if="${userRole=='patient'}" id="backButton" class="sidebar-button" th:onclick="|window.location.href='/patient/${patientId}/appointments'|">Back to Management</button>
+		<button th:if="${userRole=='admin'}" id="backButton" class="sidebar-button"
+		onclick="history.back()"></button>
+	</div>
+
+</body>
+
+</html>

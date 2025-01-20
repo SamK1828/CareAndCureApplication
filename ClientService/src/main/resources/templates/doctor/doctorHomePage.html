@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* General Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #85d7f4, #d4eff7);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Container */
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.6s ease-in-out;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Buttons */
+        button {
+            margin-top: 15px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #43aa8b, #a4efc9);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #a4efc9, #43aa8b);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Input Fields and Dropdown */
+        input[type="text"],
+        input[type="number"],
+        input[type="password"],
+        #selectLogin {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            background: #f9f9f9;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:focus,
+        #selectLogin:focus {
+            border-color: #3498db;
+            background: #ffffff;
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #e74c3c;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            input[type="password"],
+            #selectLogin {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Title -->
+    <h1>Doctor Page</h1>
+
+    <!-- Display Error Message -->
+    <div th:if="${errorMessage}" class="container">
+        <p class="error-message" th:text="${errorMessage}"></p>
+    </div>
+
+    <div class="form-container">
+        <div th:if="${message}" class="container">
+            <p style="font-size: medium;" th:text="${message}"></p>
+        </div>
+        
+
+    </div>
+
+   
+</body>
+
+</html>

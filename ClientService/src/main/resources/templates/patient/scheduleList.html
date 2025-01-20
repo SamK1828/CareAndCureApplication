@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduled Patient List</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #85d7f4, #d4eff7);
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Page Title */
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Table Container */
+        .table-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow-x: auto;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        th {
+            background: linear-gradient(135deg, #6ec6ff, #a1dffc);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fcff;
+        }
+
+        tr:hover {
+            background-color: #eaf6ff;
+        }
+         /* Navigation Buttons */
+         .button-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .button-container button {
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #58ecdb, #41f69c); /* Soft green tones */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background: linear-gradient(135deg, #87f9c0, #6ddccf); /* Hover effect */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Action Buttons */
+        .next-button {
+            padding: 8px 16px;
+            margin: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #fece2e, #fdeb95); /* Bright yellow tones */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .next-button:hover {
+            background: linear-gradient(135deg, #f3df7a, #fbce39); /* Hover effect */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            th,
+            td {
+                font-size: 14px;
+            }
+
+            .next-button {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+
+            .button-container button {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 22px;
+            }
+
+            th,
+            td {
+                font-size: 12px;
+            }
+        }
+
+        /* Error and Success Messages */
+        .error-message {
+            color: #e74c3c;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .success-message {
+            color: #27dd73;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Scheduled Patient List</h2>
+
+    <!-- Display Error or Success Messages -->
+    <div class="container">
+        <p th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></p>
+        <p th:if="${successMessage}" class="success-message" th:text="${successMessage}"></p>
+    </div>
+
+    <!-- Scheduled Patient Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Appointment ID</th>
+                    <th>Doctor Name</th>
+                    <th>Reason for Cancellation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Thymeleaf Dynamic Table Rows -->
+                <tr th:each="appointment : ${scheduledList}">
+                    <td th:text="${appointment.patientId}"></td>
+                    <td th:text="${appointment.appointmentId}"></td>
+                    <td th:text="${appointment.doctorName}"></td>
+                    <td th:text="${appointment.reasonOfCancellation}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Navigation Button -->
+    <div class="button-container">
+        <div th:if="${userRole=='admin'}">
+        <button onclick="window.location.href='/adminPage'">Home Page</button>
+        <button type="button" onclick="history.back()">Back</button>
+        </div>
+    </div>
+</body>
+
+</html>

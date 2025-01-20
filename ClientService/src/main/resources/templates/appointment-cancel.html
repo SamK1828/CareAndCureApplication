@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Appointment</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="sidebar">
+			<button id="backButton" class="sidebar-button"
+				th:onclick="|window.location.href='/patient/${patientId}/appointments'|">Back to Management</button>
+		</div>
+
+        <div class="content">
+            <h2>Cancel Appointment</h2>
+
+			<div id="errorMessage" class="error-message" style="display: none;">
+				
+				<p>An error occurred. Please try again later.</p>
+			</div>
+            <!-- <form id="cancelAppointmentForm" 
+                th:action="@{/patient/{patientId}/appointments/cancel/{appointmentId}(patientId=${patientId}, appointmentId=${cancelAppointmentDTO.appointmentId})}" 
+                th:object="${cancelAppointmentDTO}" 
+                method="post"> -->
+				<form id="cancelAppointmentForm" 
+					th:action="@{/patient/{patientId}/appointments/cancel/{appointmentId}(patientId=${patientId}, appointmentId=${cancelAppointmentDTO.appointmentId})}" 
+					th:object="${cancelAppointmentDTO}" 
+					method="post" 
+					onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+ 
+                <div class="form-group">
+                    <label for="appointmentId">Appointment ID:</label>
+                    <input type="number" id="appointmentId" name="appointmentId" 
+                        th:field="*{appointmentId}" readonly required />
+                </div>
+
+                <div class="form-group">
+                    <label for="cancelReason">Reason for Cancellation:</label>
+                    <textarea id="cancelReason" name="reasonOfCancellation" 
+                        th:field="*{reasonOfCancellation}" th:placeholder="|Enter reason for cancellation|"
+                        th:value="${userRole == 'admin' ? 'Not Present' : ''}"  required></textarea>
+                </div>
+
+                <button type="submit" class="submit-button">Cancel Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            flex-wrap: wrap;
+        }
+
+        h2 {
+            color: #d9534f;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sidebar {
+            flex: 1 1 250px;
+            background-color: #d9534f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar-button {
+            background-color: #c9302c;
+            color: white;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            width: 90%;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-button:hover {
+            background-color: #ac2925;
+        }
+
+        .content {
+            flex: 2 1 600px;
+            padding: 20px;
+            background-color: white;
+            margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 1em;
+            margin-bottom: 5px;
+        }
+
+        input, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .submit-button {
+            background-color: #d9534f;
+            color: white;
+            font-size: 1.1em;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #c9302c;
+        }
+
+		.error-message {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        font-size: 1em;
+        text-align: center;
+    }
+    </style>
+</body>
+</html>

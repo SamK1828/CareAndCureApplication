@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login</title>
+    <style>
+      /* Base Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* General Body Styling */
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #85d7f4, #d4eff7);
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #bdc3c7;
+        border-radius: 8px;
+        background: #f9f9f9;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Login Container */
+      .login-container {
+        width: 100%;
+        max-width: 700px;
+        padding: 10px;
+        background: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        display: flex;
+        animation: fadeIn 0.6s ease-in-out;
+      }
+
+      input:focus {
+        border-color: #3498db;
+        background: #ffffff;
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Image Section */
+      .login-image {
+        flex: 1;
+        background: url("https://cdn.dribbble.com/users/8619169/screenshots/16514320/media/0dc828901898c59928c3d69718791941.gif")
+          no-repeat center center;
+        background-size: contain;
+      }
+
+      /* Form Section */
+      .login-form {
+        flex: 1.2;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .login-form h1 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      label {
+        font-size: 16px;
+        font-weight: bold;
+        color: #34495e;
+        margin-bottom: 10px;
+        display: inline-block;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #bdc3c7;
+        border-radius: 8px;
+        background: #f9f9f9;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      input:focus {
+        border-color: #3498db;
+        background: #ffffff;
+        outline: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background: linear-gradient(135deg, #0b79d0, #53b0fc);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        animation: fadeInUp 1s ease-out;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          transform: translateY(40px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      button:hover {
+        background: linear-gradient(135deg, #a4efc9, #0b79d0);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        transform: translateY(-2px);
+      }
+
+      /* Error Message */
+      .error-message {
+        color: #e74c3c;
+        font-size: 16px;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .login-container {
+          flex-direction: column;
+        }
+
+        .login-image {
+          height: 200px;
+        }
+
+        .login-form h1 {
+          font-size: 24px;
+        }
+
+        button {
+          font-size: 14px;
+          padding: 10px 15px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="login-container">
+      <!-- Image Section -->
+      <div class="login-image"></div>
+
+      <!-- Form Section -->
+      <div class="login-form">
+        <h1>Admin Login</h1>
+
+        <!-- Display Error Message -->
+        <div th:if="${errorMessage}">
+          <p class="error-message" th:text="${errorMessage}"></p>
+        </div>
+
+        <form th:action="@{/login}" th:object="${userInfo}" th:method="post">
+          <label for="username">Username :</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            th:field="*{username}"
+            placeholder="Enter here...."
+            required
+          />
+          <div
+            class="error-message"
+            th:if="${validationErrors != null and validationErrors.containsKey('username')}"
+          >
+            <p th:text="${validationErrors['username']}"></p>
+          </div>
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            th:field="*{password}"
+            placeholder="Enter here...."
+            required
+          />
+          <div
+            class="error-message"
+            th:if="${validationErrors != null and validationErrors.containsKey('password')}"
+          >
+            <p th:text="${validationErrors['password']}"></p>
+          </div>
+          <input type="hidden" name="role" value="admin" />
+          <div style="display: flex; gap: 10px">
+            <button type="submit">Login</button>
+            <button type="button" onclick="history.back()">Back</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

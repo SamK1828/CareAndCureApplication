@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Care and Cure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background: linear-gradient(90deg, #4faaf5, #044373);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            font-size: 2rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            animation: slideInDown 1s ease-out;
+        }
+
+        .container {
+            /* max-width: 1400px; */
+            scroll-behavior: smooth;
+            margin: 0 auto;
+            /* padding: 0.5rem; */
+        }
+
+        .login-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .login-button {
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(90deg, #53b0fc, #0b79d0);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(135deg,  #0b79d0, #53b0fc);
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background: url('https://img.freepik.com/free-photo/stethoscope-copy-space_23-2147652347.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            padding: 2rem 0rem;
+            box-sizing: border-box;
+        }
+
+        .features::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.5);
+            z-index: 1;
+        }
+
+        .feature {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            text-align: center;
+            width: 30%;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            z-index: 2;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #2196F3;
+        }
+
+        .feature h2 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .feature p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        footer {
+            background: linear-gradient(90deg, #333, #111);
+            color: white;
+            padding: 1.5rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            animation: slideInUp 1s ease-out;
+        }
+
+        footer a {
+            color: #2196F3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .feature {
+                width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            header {
+                font-size: 1.5rem;
+            }
+
+            .cta-button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Care and Cure App</h1>
+        <h2 style="font-size: 1.5rem; font-family: 'Roboto', Arial, sans-serif; font-weight: 700; margin-top: 0.5rem;">Your Health, Our Priority....</h2>
+    </header>
+    <div id="features" class="container">
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-user-md"></i>
+                <h2>For Doctors</h2>
+                <p>Manage your appointments and patient records efficiently.</p>
+                <a href="/doctorLoginForm" class="login-button">Doctor Portal</a>
+            </div>
+            <div class="feature">
+                <i class="fas fa-procedures"></i>
+                <h2>For Patients</h2>
+                <p>Book appointments and access your medical history easily.</p>
+                <a href="/patientHomePage" class="login-button">Patient Portal</a>
+            </div>
+            <div class="feature">
+                <i class="fas fa-hospital"></i>
+                <h2>For Admins</h2>
+                <p>Oversee and manage the entire healthcare system efficiently.</p>
+                <a href="/adminLoginForm" class="login-button">Admin Portal</a>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 Care and Cure. All rights reserved. | <a href="#features">Back to Top</a></p>
+    </footer>
+</body>
+</html>

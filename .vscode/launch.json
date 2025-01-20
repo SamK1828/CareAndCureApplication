@@ -1,0 +1,64 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ClientServiceApplication<com.clientService-appointment-calendar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.cac.client.ClientServiceApplication",
+            "projectName": "client",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CacApplication<com.careandcure-appointment-calendar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.cac.CacApplication",
+            "projectName": "server",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CacApplication<com.careandcure-appointment-calendar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.careandcure.cac.CacApplication",
+            "projectName": "com.careandcure-appointment-calendar",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ClientServiceApplication<com.clientService-appointment-calendar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.clientService.ClientServiceApplication",
+            "projectName": "com.clientService-appointment-calendar",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CacApplication<com.careandcure-appointment-calendar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.cac.CacApplication",
+            "projectName": "com.careandcure-appointment-calendar",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ClientServiceApplication<com.clientService-appointment-calendar>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.cac.client.ClientServiceApplication",
+            "projectName": "com.clientService-appointment-calendar",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

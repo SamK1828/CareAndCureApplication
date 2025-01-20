@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Patient</title>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* General Body Styling */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #85d7f4, #d4eff7);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header Styling */
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Form Container Styling */
+        .form-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            margin: 10px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.6s ease-in-out;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Labels and Dropdown */
+        label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #34495e;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #searchBy {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            background: #f9f9f9;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #searchBy:focus {
+            border-color: #3498db;
+            background: #ffffff;
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Input Fields */
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            background: #f9f9f9;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input:focus {
+            border-color: #3498db;
+            background: #ffffff;
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Buttons */
+        button {
+            display: inline-block;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #ffffff;
+            background: linear-gradient(135deg, #43aa8b, #a4efc9);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #a4efc9, #43aa8b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #e74c3c;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            #searchBy {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Page Title -->
+    <h1>Find Patient</h1>
+
+    <!-- Display Error Message -->
+    <div th:if="${errorMessage}" class="form-container">
+        <p class="error-message" th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Dropdown to Select Search Option -->
+    <div class="form-container">
+        <label for="searchBy">Search Patient By:</label>
+        <select id="searchBy" onchange="toggleSearchForms()">
+            <option value="" disabled selected>--Select an Option--</option>
+            <option value="name">Name</option>
+            <option value="id">ID</option>
+            <option value="status">Status</option>
+        </select>
+    </div>
+
+    <!-- Form to Search by Name -->
+    <div id="searchByNameForm" class="form-container" style="display: none;">
+        <form th:action="@{/findPatientByName}" th:method="get">
+            <label for="name">Search By Patient Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter patient name..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- Form to Search by ID -->
+    <div id="searchByIdForm" class="form-container" style="display: none;">
+        <form th:action="@{/findPatientById}" th:method="get">
+            <label for="id">Search By Patient ID:</label>
+            <input type="number" id="id" name="patientId" placeholder="Enter patient ID..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- Form to Search by Status -->
+    <div id="searchByStatusForm" class="form-container" style="display: none;">
+        <form th:action="@{/viewAllActivePatient}" th:method="get">
+            <label for="status">Search By Patient Status:</label>
+            <select id="searchBy" name="active">
+                <!-- <option value="" disabled selected>--Select an Option--</option> -->
+                <option value="true" selected>Active</option>
+                <option value="false">InActive</option>
+            </select>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+    <!-- Navigation Button -->
+    <div class="button-container">
+        <div th:if="${userRole}=='admin'">
+        <button onclick="window.location.href='/adminPage'">Go to Home Page</button>
+        </div>
+        <div th:if="${userRole}=='patient'">
+            <button onclick="window.location.href='/patientPage'">Go to Home Page</button>
+        </div>
+    </div>
+   
+
+    <!-- JavaScript for Toggling Forms -->
+    <script>
+        // Function to toggle forms based on the selected option
+        function toggleSearchForms() {
+            const searchBy = document.getElementById("searchBy").value;
+            const nameForm = document.getElementById("searchByNameForm");
+            const idForm = document.getElementById("searchByIdForm");
+            const statusForm = document.getElementById("searchByStatusForm");
+
+            if (searchBy === "name") {
+                nameForm.style.display = "block";
+                statusForm.style.display="none";
+                idForm.style.display = "none";
+            } else if (searchBy === "id") {
+                nameForm.style.display = "none";
+                statusForm.style.display="none";
+                idForm.style.display = "block";
+            }  else if (searchBy === "status") {
+                nameForm.style.display = "none";
+                idForm.style.display = "none";
+                statusForm.style.display="block";
+            }else {
+                nameForm.style.display = "none";
+                idForm.style.display = "none";
+                statusForm.style.display="none";
+            }
+        }
+    </script>
+</body>
+
+</html>
