@@ -51,7 +51,7 @@ This project is developed using **Java Full-Stack Technology**, leveraging robus
 ### Steps to Setup
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/CareAndCureApp.git
+   git clone https://github.com/SamK1828/CareAndCureApplication.git
    ```
 2. **Navigate to the Project Directory**:
    ```bash
