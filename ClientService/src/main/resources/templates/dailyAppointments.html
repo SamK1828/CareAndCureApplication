@@ -119,27 +119,38 @@
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
-          /* Submit Button */
-      input[type="submit"],
-      input[type="date"] {
-        width: 100%;
-        padding: 12px 15px;
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-        color: white;
-        font-size: 18px;
-        font-weight: bold;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        transition: all 0.3s ease;
-      }
 
-      input[type="submit"]:hover,
-      input[type="date"]:hover {
-        background: linear-gradient(135deg, #00f2fe, #4facfe);
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        /* Submit Button */
+        input[type="date"],textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #bdc3c7;
+        border-radius: 8px;
+        background: #f9f9f9;
+        font-size: 16px;
+        color: #34495e;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
+        input[type="submit"]{
+            width: 100%;
+            padding: 12px 15px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        input[type="submit"]:hover,
+        input[type="date"]:hover {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
 
         /* Action Buttons */
         .next-button {
@@ -162,30 +173,21 @@
 
         /* Form Container Styling */
         .form-container {
-            width: 100%;
-            max-width: 500px;
-            padding: 20px;
+            max-width: 450px;
+            padding: 15px;
             margin: 10px auto;
             background: #ffffff;
             border-radius: 12px;
+            /* border-style: ridge; */
+            /* border-color: #63a9d8; */
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             animation: fadeIn 0.6s ease-in-out;
             text-align: center;
+            background: linear-gradient(to bottom, #7ecfef,#80c0f7); /* Attractive gradient background */
+            position: relative;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Labels and Dropdown */
-        label {
+        .form-container label {
             font-size: 16px;
             font-weight: bold;
             color: #34495e;
@@ -193,8 +195,8 @@
             margin-bottom: 10px;
         }
 
-        #searchBy {
-            width: 100%;
+        .form-container input {
+            /* width: calc(100% - 22px); */
             padding: 10px;
             font-size: 16px;
             border: 1px solid #bdc3c7;
@@ -202,13 +204,33 @@
             background: #f9f9f9;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
-        #searchBy:focus {
+        .form-container input:focus {
             border-color: #3498db;
-            background: #ffffff;
+            background: #b0daf8;
             outline: none;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-3px);
         }
 
         /* Responsive Styles */
@@ -254,8 +276,6 @@
             text-align: center;
             margin-bottom: 15px;
         }
-
-        
     </style>
 </head>
 
@@ -272,12 +292,11 @@
     <!-- Form to Search by date -->
     <div class="form-container">
         <form th:action="@{/patient/dailyAppointments}" th:method="get">
-            <label for="selectDate">Search By Patient Name:</label>
+            <label for="selectDate">Search By Date:</label>
             <input type="date" id="selectDate" name="date" th:value="${selectedDate}">
-            <button type="submit" >Search</button>
+            <button type="submit">Search</button>
         </form>
     </div>
-
 
     <!-- Patient Appointment Table -->
     <div class="table-container">
@@ -297,11 +316,11 @@
                 <!-- Thymeleaf Dynamic Table Rows -->
                 <tr th:each="appointment : ${appointments}">
                     <td th:text="${appointment.patient.patientId}"></td>
-                   <td th:text="${appointment.patient.patientName}"></td>
+                    <td th:text="${appointment.patient.patientName}"></td>
                     <td th:text="${appointment.patient.age}"></td>
                     <td th:text="${appointment.patient.contactNumber}"></td>
                     <td th:text="${appointment.doctorName}"></td>
-                    <td th:text="${appointment.appointmentDate}"></td> 
+                    <td th:text="${appointment.appointmentDate}"></td>
                     <td>
                         <a th:href="@{'/patient/'+${appointment.patient.patientId}+'/appointments'}" class="next-button">History</a>
                     </td>
@@ -313,22 +332,23 @@
     <!-- Navigation Button -->
     <div class="button-container">
         <div th:if="${userRole=='admin'}">
-        <button onclick="window.location.href='/adminPage'">Home Page</button>
-        <button type="button" onclick="history.back()">Back</button>
+            <button onclick="window.location.href='/adminPage'">Home Page</button>
+            <button type="button" onclick="history.back()">Back</button>
         </div>
     </div>
 
-     <!-- Include Flatpickr JS -->
-     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-     <script> 
-    let dateOfBirth = document.getElementById('selectDate').value || "0000-00-00"; // Log the date for debugging console.log(dateOfBirth);
- 
-         flatpickr('#selectDate', { 
-             dateFormat: 'Y-m-d', 
-             altInput: true, 
-             altFormat: 'd/m/Y', 
-             defaultDate: dateOfBirth }); 
- </script>
+    <!-- Include Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        let dateOfBirth = document.getElementById('selectDate').value || "0000-00-00"; // Log the date for debugging console.log(dateOfBirth);
+
+        flatpickr('#selectDate', {
+            dateFormat: 'Y-m-d',
+            altInput: true,
+            altFormat: 'd/m/Y',
+            defaultDate: dateOfBirth
+        });
+    </script>
 </body>
 
 </html>

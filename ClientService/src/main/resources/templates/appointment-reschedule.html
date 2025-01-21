@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reschedule Appointment</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
-        /* General Styling */
+        /* Reset and Base Styling */
         * {
             margin: 0;
             padding: 0;
@@ -14,26 +16,41 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
             color: #333;
-            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
 
         .container {
-            max-width: 600px;
-            margin: 40px auto;
+            width: 100%;
+            max-width: 500px;
             padding: 30px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
-            font-size: 24px;
-            color: #4a4a4a;
+            font-size: 28px;
+            color: #2c3e50;
             text-align: center;
-            margin-bottom: 20px;
-            font-weight: 600;
+            margin-bottom: 25px;
         }
 
         .form-group {
@@ -42,60 +59,66 @@
 
         label {
             font-size: 14px;
-            font-weight: 500;
-            color: #555;
+            font-weight: 600;
+            color: #4a4a4a;
             margin-bottom: 8px;
             display: block;
         }
 
-        input, select, button, textarea {
+        input, select, button {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ccc;
+            padding: 12px;
+            border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 16px;
             outline: none;
             transition: border-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        input:focus, select:focus, textarea:focus {
-            border-color: #3f51b5;
-            box-shadow: 0 0 5px rgba(63, 81, 181, 0.2);
+        input:focus {
+            border-color: #5a9ef8;
+            box-shadow: 0 4px 8px rgba(90, 158, 248, 0.3);
+        }
+
+        .flatpickr-input {
+            background-color: #f9f9f9;
+            cursor: pointer;
         }
 
         button {
-            background-color: #3f51b5;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
             color: white;
             font-size: 16px;
             font-weight: bold;
-            padding: 12px;
             border: none;
-            border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         button:hover {
-            background-color: #303f9f;
+            background: linear-gradient(135deg, #66bb6a, #388e3c);
+            transform: translateY(-2px);
         }
 
         .back-button {
-            background-color: #e0e0e0;
-            color: #333;
-            font-size: 16px;
-            font-weight: bold;
+            background: linear-gradient(135deg, #e57373, #c62828);
+            color: white;
             margin-top: 15px;
         }
 
         .back-button:hover {
-            background-color: #d6d6d6;
+            background: linear-gradient(135deg, #ef5350, #b71c1c);
         }
 
         .message {
             padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
             font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
         }
 
         .success {
@@ -110,18 +133,13 @@
             border: 1px solid #ebccd1;
         }
 
-        a {
-            text-decoration: none;
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
 
             h1 {
-                font-size: 22px;
+                font-size: 20px;
             }
 
             input, button {
@@ -131,6 +149,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>Reschedule Your Appointment</h1>
@@ -147,23 +166,49 @@
         <form method="POST" th:action="@{/patient/{patientId}/appointments/reschedule/{appointmentId}(patientId=${patientId},appointmentId=${appointmentId})}">
             <div class="form-group">
                 <label for="appointmentDate">New Appointment Date</label>
-                <input type="date" id="appointmentDate" name="newDate" required>
+                <input type="text" id="appointmentDate" class="flatpickr-input" name="newDate" placeholder="Select a date" required>
             </div>
-        
+
             <div class="form-group">
                 <label for="appointmentTime">New Appointment Time</label>
-                <input type="time" id="appointmentTime" name="newTime" required>
+                <input type="text" id="appointmentTime" class="flatpickr-input" name="newTime" placeholder="Select a time" required>
             </div>
-        
+
             <button type="submit">Confirm Reschedule</button>
         </form>
 
         <!-- Back to Management Button -->
-        <a th:href="@{/patient/{patientId}/appointments}">
+        <!-- <a th:href="@{/patient/{patientId}/appointments}">
             <button class="back-button">Back to Appointment Management</button>
-        </a>
+        </a> -->
+        <button type="button" class="back-button" onclick="history.back()">
+            Back
+          </button>
     </div>
+
+    <!-- Flatpickr Script -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Initialize Flatpickr for the Date Picker
+        flatpickr("#appointmentDate", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+        });
+
+        // Initialize Flatpickr for the Time Picker
+        flatpickr("#appointmentTime", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "H:i",
+            time_24hr: false,
+            defaultHour: 10,
+            defaultMinute: 0,
+        });
+    </script>
 </body>
+
 </html>
 
 
