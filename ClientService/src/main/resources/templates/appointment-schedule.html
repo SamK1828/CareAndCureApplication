@@ -4,63 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schedule Appointment</title>
-</head>
-<body>
-    <div class="container">
-        
-        <div class="sidebar">
-            <button id="backButton" class="sidebar-button" th:onclick="|window.location.href='/patient/${patientId}/appointments'|">Back to Management</button>
-        </div>
-
-        <div class="content">
-            <h2>Schedule Appointment</h2>
-
-            <!-- <div id="errorMessage" class="error-message" th:if="${errorMessage}">
-                <p th:text="${errorMessage}"></p>
-            </div> -->
-
-            <form id="appointmentForm" th:action="@{'/patient/'+${patientId}+'/appointments/schedule'}" th:object="${scheduleAppointmentDTO}" method="post">
-                <div class="form-group">
-                    <label for="patientId">Patient ID:</label>
-                    <input type="number" id="patientId" name="patientId" th:value="${patientId}" readonly />
-                </div>
-
-                <div class="form-group">
-                    <label for="reason">Reason for Appointment:</label>
-                    <input type="text" id="reason" name="reason" th:field="*{reason}" placeholder="Enter reason" required />
-                </div>
-
-                <!-- Hidden input to store doctorId -->
-                <!-- <input type="hidden" id="doctorId" name="doctorId" />  Hidden field to store doctorId -->
-
-                <div class="form-group">
-                    <label for="doctorSelect">Select Doctor:</label>
-                    <select id="doctorSelect" name="doctorId" th:field="*{doctorId}" required>
-                        <option value="" disabled selected>Select a doctor</option>
-						<option th:each="doctor : ${doctors}" 
-						                th:value="${doctor.doctorId}" 
-						                th:text="${doctor.doctorName}">Doctor</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="appointmentDate">Appointment Date:</label>
-                    <input type="date" id="appointmentDate" name="appointmentDate" th:field="*{appointmentDate}" required />
-                </div>
-
-                <div class="form-group">
-                    <label for="appointmentTime">Appointment Time:</label>
-                    <input type="time" id="appointmentTime" name="appointmentTime" th:field="*{appointmentTime}" required />
-                </div>
-
-                <!-- <input type="hidden" name="status" th:field="*{status}" th:value="Scheduled" />   Default to Scheduled -->
-                <!-- <input type="hidden" name="reasonOfCancellation" th:field="*{reasonOfCancellation}" /> Default to null -->
-
-                <button type="submit" class="submit-button">Book Appointment</button>
-            </form>
-        </div>
-    </div>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         /* General Styling */
         * {
@@ -71,60 +15,75 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(90deg, #a5caec, #d6e3ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
             display: flex;
-            min-height: 100vh;
+            flex-wrap: wrap;
+            width: 90%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: fadeIn 1s ease-in-out;
         }
 
         h2 {
-            color: #6b5b95;
+            color: #044373;
             text-align: center;
             margin-bottom: 20px;
+            font-size: 1.8em;
         }
 
         /* Sidebar Styling */
         .sidebar {
             flex: 1;
-            background-color: #6b5b95;
+            background: linear-gradient(135deg, #69b3f4, #044373);
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 30px;
         }
 
         .sidebar-button {
-            background-color: #805ad5;
-            color: white;
-            padding: 10px 15px;
+            background-color: white;
+            color: #044373;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         .sidebar-button:hover {
-            background-color: #6b46c1;
+            background-color: #f1f1f1;
+            transform: translateY(-2px);
         }
 
         /* Content Styling */
         .content {
             flex: 2;
-            padding: 20px;
+            padding: 40px;
             background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            animation: slideIn 1s ease-in-out;
         }
 
         form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
 
         .form-group {
@@ -138,37 +97,63 @@
             color: #333;
         }
 
-        input,
-        select {
-            padding: 10px;
+        input, select {
+            padding: 12px;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            transition: border-color 0.3s;
+            border-radius: 8px;
+            transition: border-color 0.3s ease;
+            font-size: 1em;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        input:focus,
-        select:focus {
-            border-color: #6b5b95;
+        input:focus, select:focus {
+            border-color: #69b3f4;
+            box-shadow: 0 6px 15px rgba(105, 179, 244, 0.3);
+            outline: none;
         }
 
-        input[readonly] {
-            background-color: #f0f4f8;
-            cursor: not-allowed;
+        .flatpickr-input {
+            cursor: pointer;
         }
 
         .submit-button {
-            background-color: #6b5b95;
+            background: linear-gradient(135deg, #69b3f4, #044373);
             color: white;
-            padding: 10px 15px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
         }
 
         .submit-button:hover {
-            background-color: #805ad5;
-            transform: translateY(-2px);
+            background: linear-gradient(135deg, #044373, #69b3f4);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* Responsive Design */
@@ -179,10 +164,11 @@
 
             .sidebar {
                 width: 100%;
+                text-align: center;
             }
 
             .content {
-                padding: 15px;
+                padding: 20px;
             }
         }
 
@@ -191,19 +177,78 @@
                 font-size: 1.5em;
             }
 
-            label {
+            input, select {
                 font-size: 0.9em;
-            }
-
-            input,
-            select {
-                font-size: 0.85em;
             }
 
             .submit-button {
-                font-size: 0.9em;
+                font-size: 1em;
             }
         }
     </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <!-- <button id="backButton" class="sidebar-button" th:onclick="|window.location.href='/patient/${patientId}/appointments'|">Back to Management</button>
+              -->
+            <button id="backButton" class="sidebar-button" onclick="history.back()">Back to Management</button>
+        </div>
+
+        <div class="content">
+            <h2>Schedule Appointment</h2>
+
+            <form id="appointmentForm" th:action="@{'/patient/'+${patientId}+'/appointments/schedule'}" th:object="${scheduleAppointmentDTO}" method="post">
+                <div class="form-group">
+                    <label for="patientId">Patient ID:</label>
+                    <input type="number" id="patientId" name="patientId" th:value="${patientId}" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label for="reason">Reason for Appointment:</label>
+                    <input type="text" id="reason" name="reason" th:field="*{reason}" placeholder="Enter reason" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="doctorSelect">Select Doctor:</label>
+                    <select id="doctorSelect" name="doctorId" th:field="*{doctorId}" required>
+                        <option value="" disabled selected>Select a doctor</option>
+                        <option th:each="doctor : ${doctors}" th:value="${doctor.doctorId}" th:text="${doctor.doctorName}">Doctor</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="appointmentDate">Appointment Date:</label>
+                    <input type="text" id="appointmentDate" class="flatpickr-input" name="appointmentDate" placeholder="Select date" required />
+                </div>
+
+                <div class="form-group">
+                    <label for="appointmentTime">Appointment Time:</label>
+                    <input type="text" id="appointmentTime" class="flatpickr-input" name="appointmentTime" placeholder="Select time" required />
+                </div>
+
+                <button type="submit" class="submit-button">Book Appointment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flatpickr Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Date Picker
+        flatpickr("#appointmentDate", {
+            altInput: true,
+            altFormat: "F j, Y",
+            dateFormat: "Y-m-d",
+            minDate: "today",
+        });
+
+        // Time Picker
+        flatpickr("#appointmentTime", {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: "h:i K",
+        });
+    </script>
 </body>
 </html>

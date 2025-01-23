@@ -214,7 +214,7 @@
                     <td th:text="${patient.emailId}"></td>
                     <td>
                         <a th:href="@{'/admin/viewPatientProfile?patientId='+${patient.patientId}}" class="next-button">view Details</a>
-                        <a th:href="@{/updatePatient?patientId='+${patient.patientId}}" class="next-button">Update</a>
+                        <a th:href="@{'/updatePatient?patientId='+ ${patient.patientId}}" class="next-button">Update</a>
                         <a th:href="@{'/deactivatePatient?patientId=' + ${patient.patientId} + '&searchType=' + ${searchType} + '&searchValue=' + ${searchValue}}" 
                         class="next-button">
                             <th:block th:if="${patient.isActive}">Deactivate</th:block>

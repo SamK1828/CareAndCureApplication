@@ -14,7 +14,7 @@
 
       body {
         font-family: "Arial", sans-serif;
-        background: linear-gradient(to bottom, #b2d3ef, #698fc4);
+        background: linear-gradient(135deg, #a5caec, #d6e3ec);
         color: #333;
         display: flex;
         justify-content: center;
@@ -132,7 +132,6 @@
         display: grid;
         justify-content: center;
         position: center;
-
       }
 
       .content header {
@@ -284,6 +283,22 @@
           </button>
           <button type="button" class="next-button" onclick="history.back()">
             Back
+          </button>
+
+          <button
+            class="next-button"
+            th:if="${userRole == 'admin'}"
+            th:onclick="|window.location.href='/adminPage'|"
+          >
+            Go to Admin Page
+          </button>
+
+          <button
+            class="next-button"
+            th:if="${userRole == 'patient'}"
+            th:onclick="|window.location.href='/patientPage'|"
+          >
+            Go to Patient Page
           </button>
         </div>
       </div>

@@ -167,28 +167,16 @@
 					<strong>Patient ID:</strong> [[${patientId}]]
 				</div>
 			</div>
-
-			<!-- Admin Success Message -->
-			<div th:if="${admin}" class="details-container">
-				<p class="success-message">Admin Registered Successfully</p>
-				<div>
-					<strong>Admin Username:</strong> [[${username}]]
-				</div>
-				<div>
-					<strong>Email:</strong> [[${email}]]
-				</div>
-				<em>Check Your mail for login details.</em>
-			</div>
 		</div>
 		
 
 		<!-- Navigation Buttons -->
 		<div class="button-container">
-			<button class="next-button" th:if="${userRole == 'admin'}" th:onclick="|window.location.href='/adminPage'|">
+			<!-- <button class="next-button" th:if="${userRole == 'admin'}" th:onclick="|window.location.href='/adminPage'|">
 				Go to Admin Page
-			</button>
+			</button> -->
 
-			<button type="button" class="next-button" onclick="window.location.href='/homePageView'">
+			<button type="button" class="next-button" onclick="window.location.href='/patient/patientHome'">
 				Home Page
 			</button>
 		</div>

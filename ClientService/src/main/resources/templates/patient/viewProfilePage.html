@@ -86,7 +86,7 @@
         .back-button,
         .edit-button {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 10px 10px;
             font-size: 16px;
             font-weight: bold;
             border: none;
@@ -99,7 +99,8 @@
         .back-button {
             background: linear-gradient(135deg, #3498db, #85d7f4);
             color: #ffffff;
-            margin-right: 10px;
+            font-size: 16px;
+            /* margin-right: 10px; */
         }
 
         .back-button:hover {
@@ -178,7 +179,7 @@
                 </a>
                 <a th:href="@{'/updatePatient?id='+${patient.patientId}}" class="edit-button">Update Profile</a>-->
 
-                <button type="button" onclick="history.back()">Back</button>
+                <button class="back-button" onclick="history.back()">Back</button>
             </div>
             <div th:if="${userRole=='patient'}">
                 <button class="back-button" onclick="window.location.href='/patientPage'">Back</button>
