@@ -26,7 +26,7 @@ public class Appointment {
   private LocalDate appointmentDate;
   private LocalTime appointmentTime;
   private String status="Scheduled";
-  @Size(min = 10, message = "Reason must be at least 10 characters long")
+  @Size(min = 5, message = "Reason must be at least 10 characters long")
   private String reason;
   
   private String reasonOfCancellation;
