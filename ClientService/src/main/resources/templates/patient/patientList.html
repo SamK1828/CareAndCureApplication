@@ -216,13 +216,7 @@
                         <a th:href="@{'/admin/viewPatientProfile?patientId='+${patient.patientId}}" class="next-button">view Details</a>
                         <a th:href="@{'/updatePatient?patientId='+ ${patient.patientId}}" class="next-button">Update</a>
                         <a th:href="@{'/deactivatePatient?patientId=' + ${patient.patientId} + '&searchType=' + ${searchType} + '&searchValue=' + ${searchValue}}" 
-                        class="next-button">
-                            <th:block th:if="${patient.isActive}">Deactivate</th:block>
-                            <th:block th:unless="${patient.isActive}">Activate</th:block>
-                        </a>
-                        <a th:href="@{'/patient/'+${patient.patientId}+'/appointments'}" class="next-button">Appointment</a>
-                    </td>
-                </tr>
+                        class="next-button" th:text="${patient.isActive} ? 'Deactivate' : 'Activate'"></a>
             </tbody>
         </table>
     </div>
