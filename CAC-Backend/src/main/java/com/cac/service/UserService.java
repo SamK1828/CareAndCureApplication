@@ -18,9 +18,9 @@ public class UserService {
         userInfo.setRole(userInfo.getRole().toUpperCase());
         UserInfo savedUserInfo = null;
         try{
-        userRepository.save(userInfo);
+        savedUserInfo = userRepository.save(userInfo);
         } catch(Exception e){
-            throw new UserNotFoundException("User already exist with username: "+userInfo.getUsername());
+            throw new UserNotFoundException("Failed to register");
         }
         return  savedUserInfo;
     }

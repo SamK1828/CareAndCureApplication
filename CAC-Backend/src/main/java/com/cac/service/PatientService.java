@@ -33,24 +33,27 @@ public class PatientService {
 		Patient savedPatient = patientRepository.save(patient);
 
 		// Create user information for login or account management
-		UserInfo userInfo = new UserInfo(String.valueOf(savedPatient.getPatientId()),
+		UserInfo userInfo = new UserInfo("" + savedPatient.getPatientId(),
 				patient.getPatientName(),
 				"patient");
-		userService.createUser(userInfo);
+		try {
+			userService.createUser(userInfo);
+		} catch (Exception e) {
+			patientRepository.delete(savedPatient);
+			throw e;
+		}
 
-		try{
-		emailService.sendPatientWelcomeEmail(savedPatient);
-	} catch (MessagingException | MailSendException e) {
-		// userService.deleteUser(userInfo);
-		// patientRepository.delete(savedPatient);
-		throw new MailSendException("Failed to send Message");
+		try {
+			emailService.sendPatientWelcomeEmail(savedPatient);
+		} catch (MessagingException | MailSendException e) {
+			// userService.deleteUser(userInfo);
+			// patientRepository.delete(savedPatient);
+			throw new MailSendException("Failed to send Message");
 
-	}
+		}
 
 		return savedPatient;
 	}
-
-	
 
 	public Patient updatePatientName(int id, String name) throws UserNotFoundException {
 		Patient patient = patientRepository.findById(id)
@@ -68,8 +71,6 @@ public class PatientService {
 		List<Patient> patientList = patientRepository.findAll();
 		return patientList;
 	}
-
-	
 
 	public List<Patient> getPatientsByName(String name) throws UserNotFoundException {
 		List<Patient> patients = patientRepository.findByPatientNameContainingIgnoreCase(name);
@@ -218,19 +219,19 @@ public class PatientService {
 
 		return updatedPatient;
 	}
-    
-    // Fetch patients by age range
-    public List<Patient> getPatientsByAgeRange(int minAge, int maxAge) {
-        return patientRepository.findByAgeBetween(minAge, maxAge);
-    }
 
-    // Fetch patients by gender
-    public List<Patient> getPatientsByGender(String gender) {
-        return patientRepository.findByGenderIgnoreCase(gender);
-    }
+	// Fetch patients by age range
+	public List<Patient> getPatientsByAgeRange(int minAge, int maxAge) {
+		return patientRepository.findByAgeBetween(minAge, maxAge);
+	}
 
-    // Get patient details for display
-    public Optional<Patient> getPatientDetailsForDisplay(int patientId) {
-        return patientRepository.findById(patientId);
-    }
+	// Fetch patients by gender
+	public List<Patient> getPatientsByGender(String gender) {
+		return patientRepository.findByGenderIgnoreCase(gender);
+	}
+
+	// Get patient details for display
+	public Optional<Patient> getPatientDetailsForDisplay(int patientId) {
+		return patientRepository.findById(patientId);
+	}
 }

@@ -210,16 +210,19 @@ public class UserClientController {
 			model.addAttribute("message", "Registration Successfully.");
 			return "statuspage";
 		} catch (HttpStatusCodeException e) {
+			ObjectMapper objectMapper = new ObjectMapper();
 			if (e.getStatusCode() == HttpStatus.BAD_REQUEST || e.getStatusCode() == HttpStatus.CONFLICT) {
 				// Parse validation errors from the response body
-				ObjectMapper objectMapper = new ObjectMapper();
 				Map<String, String> errors = objectMapper.readValue(e.getResponseBodyAsString(),
 						new TypeReference<Map<String, String>>() {
 						});
 				model.addAttribute("validationErrors", errors);
 				return "patient/registration";
-			} else {
-				model.addAttribute("errorMessage", "Unexpected error: " + e.getMessage());
+			} else if(e.getStatusCode()==HttpStatus.NOT_FOUND){
+				Map<String, String> errors = objectMapper.readValue(e.getResponseBodyAsString(),
+						new TypeReference<Map<String, String>>() {
+						});
+				model.addAttribute("errorMessage", errors.get("error"));
 			}
 			return "statusPage";
 		} catch (Exception e) {
