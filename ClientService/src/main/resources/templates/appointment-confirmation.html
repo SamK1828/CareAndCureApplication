@@ -151,9 +151,9 @@
 		<p>Appointment Date: <span th:text="${appointment.appointmentDate}"></span></p>
 		<p>Appointment Time: <span th:text="${appointment.appointmentTime}"></span></p>
 		<p>Thank you for using our service!</p>
-		<button th:if="${userRole=='patient'}" id="backButton" class="sidebar-button"
+		<button th:if="${userRole=='patient'}" 
 			th:onclick="|window.location.href='/patient/${patientId}/appointments'|">Back to Management</button>
-		<button th:if="${userRole=='admin'}" id="backButton" class="sidebar-button" onclick="history.back()">Back</button>
+		<button th:if="${userRole=='admin'}" onclick="history.back()">Back</button>
 	</div>
 </body>
 
