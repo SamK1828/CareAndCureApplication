@@ -183,7 +183,7 @@
             </div>
             <div th:if="${userRole=='patient'}">
                 <button class="back-button" onclick="window.location.href='/patientPage'">Back</button>
-                <a th:href="@{'/updatePatient}" class="edit-button">Update Profile</a>
+                <a th:href="@{'/updatePatient?id='+${patient.patientId}}" class="edit-button">Update Profile</a>
             </div>
         </div>
     </div>
