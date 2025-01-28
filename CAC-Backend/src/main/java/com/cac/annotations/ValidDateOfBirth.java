@@ -14,7 +14,7 @@ import com.cac.validators.DateOfBirthAgeValidator;
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidDateOfBirth {
-    String message() default "Age not matched with selected Date Of Birth.";
+    String message() default "Invalid Date of Birth.";
 
     Class<?>[] groups() default {};
 

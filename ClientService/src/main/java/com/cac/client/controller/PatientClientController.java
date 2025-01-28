@@ -127,26 +127,6 @@ public class PatientClientController {
 		return "patient/patientPage";
 	}
 
-	/*
-	 * @GetMapping("/adminPage")
-	 * public String adminPage(HttpSession session, Model model) {
-	 * String errorMessage = (String) session.getAttribute("errorMessage");
-	 * if (errorMessage != null) {
-	 * model.addAttribute("errorMessage", errorMessage);
-	 * session.removeAttribute(errorMessage);
-	 * }
-	 * String message = (String) session.getAttribute("message");
-	 * if (message != null) {
-	 * model.addAttribute("message", message);
-	 * session.removeAttribute(message);
-	 * }
-	 * return "adminPage";
-	 * }
-	 * 
-	 * 
-	 */
-	
-
 	@RequestMapping(value = "/findPatientByName", method = RequestMethod.GET)
 	public String findPatientByName(@RequestParam("name") String name, Model model) {
 		if (!isAuthorized())
@@ -243,11 +223,11 @@ public class PatientClientController {
 					Patient.class);
 			patient = response.getBody();
 			model.addAttribute("patient", patient);
-			return "patient/viewProfilePage";
+			return "patient/viewPatientProfilePage";
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 			model.addAttribute("errorMessage",
 					"Unable to fetch Patient with Id (" + patientId + "). Please try again later.");
-			return "patient/viewProfilePage";
+			return "patient/viewPatientProfilePage";
 		}
 	}
 
@@ -265,7 +245,7 @@ public class PatientClientController {
 					Patient.class, patientId);
 			patient = response.getBody();
 			model.addAttribute("patient", patient);
-			return "patient/viewProfilePage";
+			return "patient/viewPatientProfilePage";
 		} catch (HttpClientErrorException | HttpServerErrorException e) {
 			model.addAttribute("errorMessage",
 					e.getResponseBodyAs(new ParameterizedTypeReference<Map<String, String>>() {}).get("error"));
@@ -359,6 +339,7 @@ public class PatientClientController {
 			@RequestParam(value = "searchValue", required = false) String searchValue,
 			Model model) {
 		Patient patient = null;
+		if(role==null || !role.equalsIgnoreCase("admin")) return "unauthorized"; 
 		String url = baseUrl + "/api/patient/deactivatePatient/" + patientId;
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Content-Type", "application/json");
@@ -394,6 +375,7 @@ public class PatientClientController {
 
 	@RequestMapping(value = "/viewAllPatient", method = RequestMethod.GET)
 	public String getAllPatient(Model model) {
+		if(role==null || !role.equalsIgnoreCase("admin")) return "unauthorized"; 
 		List<Patient> patientList = new ArrayList<>();
 		String url = baseUrl + "/api/patient/viewAllPatient";
 		HttpHeaders headers = new HttpHeaders();
@@ -421,53 +403,54 @@ public class PatientClientController {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	@PostMapping("/patientLogin")
-	public String patientLogin(@RequestParam String username, @RequestParam String password, Model model,
-			HttpSession session) {
-		if (username.isEmpty()) {
-			session.setAttribute("errorMessage", "Please enter Patient Id");
-			return "redirect:/patientLoginForm";
-		}
-		if (password.isEmpty()) {
-			session.setAttribute("errorMessage", "Please enter name as password");
-			return "redirect:/patientLoginForm";
-		}
-		UserInfo details = new UserInfo(username, password, "patient");
+	// @SuppressWarnings("unchecked")
+	// @PostMapping("/patientLogin")
+	// public String patientLogin(@RequestParam String username, @RequestParam String password, Model model,
+	// 		HttpSession session) {
+	// 	if (username.isEmpty()) {
+	// 		session.setAttribute("errorMessage", "Please enter Patient Id");
+	// 		return "redirect:/patientLoginForm";
+	// 	}
+	// 	if (password.isEmpty()) {
+	// 		session.setAttribute("errorMessage", "Please enter name as password");
+	// 		return "redirect:/patientLoginForm";
+	// 	}
+	// 	UserInfo details = new UserInfo(username, password, "patient");
 
-		HttpHeaders headers = new HttpHeaders();
-		headers.set("Content-Type", "application/json");
+	// 	HttpHeaders headers = new HttpHeaders();
+	// 	headers.set("Content-Type", "application/json");
 
-		HttpEntity<UserInfo> requestEntity = new HttpEntity<>(details, headers);
+	// 	HttpEntity<UserInfo> requestEntity = new HttpEntity<>(details, headers);
 
-		String requestUrl = baseUrl + "/login";
+	// 	String requestUrl = baseUrl + "/login";
 
-		try {
-			ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity,
-					String.class);
-			String message = response.getBody();
-			session.setAttribute("message", message);
-			session.setAttribute("patientId", Integer.parseInt(username));
-			session.setAttribute("userRole", "patient");
-			return "redirect:/patientPage"; // Admin-specific page
+	// 	try {
+	// 		ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.POST, requestEntity,
+	// 				String.class);
+	// 		String message = response.getBody();
+	// 		session.setAttribute("message", message);
+	// 		session.setAttribute("patientId", Integer.parseInt(username));
+	// 		session.setAttribute("userRole", "patient");
+	// 		return "redirect:/patientPage"; // Admin-specific page
 
-		} catch (HttpStatusCodeException e) {
-			System.out.println(e.getMessage());
-			try {
-				ObjectMapper objectMapper = new ObjectMapper();
-				Map<String, String> errorMessage = objectMapper.readValue(e.getResponseBodyAsString(), Map.class);
+	// 	} catch (HttpStatusCodeException e) {
+	// 		System.out.println(e.getMessage());
+	// 		try {
+	// 			ObjectMapper objectMapper = new ObjectMapper();
+	// 			Map<String, String> errorMessage = objectMapper.readValue(e.getResponseBodyAsString(), Map.class);
 
-				session.setAttribute("errorMessage", errorMessage.get("error"));
-			} catch (Exception parseException) {
+	// 			session.setAttribute("errorMessage", errorMessage.get("error"));
+	// 		} catch (Exception parseException) {
 
-				session.setAttribute("errorMessage", "An error occurred while parsing the validation errors.");
-			}
-		}
-		return "redirect:/patientLoginForm"; // Redirect back to the login page in case of failure
-	}
+	// 			session.setAttribute("errorMessage", "An error occurred while parsing the validation errors.");
+	// 		}
+	// 	}
+	// 	return "redirect:/patientLoginForm"; // Redirect back to the login page in case of failure
+	// }
 
 	@GetMapping("/viewAllActivePatient")
 	public String getAllPatientByStatus(@RequestParam boolean active, Model model) {
+		if(role==null || !role.equalsIgnoreCase("admin")) return "unauthorized"; 
 		List<Patient> patientList = new ArrayList<>();
 		String url = baseUrl + "/api/patient/viewAllPatientByStatus?active=" + active;
 		HttpHeaders headers = new HttpHeaders();
@@ -493,6 +476,37 @@ public class PatientClientController {
 			model.addAttribute("errorMessage", "No Patient Record Found.");
 			return "patient/patientList";
 		}
+	}
+
+	@GetMapping("/viewPatientInsuranceDetails")
+	public String ViewPatientInsurance(@RequestParam("patientId") int patientId, Model model) {
+		if(role==null || !role.equalsIgnoreCase("admin")) return "unauthorized"; 
+		Patient patient = null;
+		String url = baseUrl + "/api/patient/viewPatient/" + patientId;
+
+		try {
+			ResponseEntity<Patient> response = restTemplate.getForEntity(
+					url,
+					Patient.class);
+			patient = response.getBody();
+
+			if (patient != null) {
+				model.addAttribute("patient", patient);
+				return "patient/patientInsuranceReport";
+			}
+
+		} catch (HttpStatusCodeException e) {
+			try {
+				ObjectMapper objectMapper = new ObjectMapper();
+				Map<String, String> errorMessage = objectMapper.readValue(e.getResponseBodyAsString(), new TypeReference<Map<String, String>>() {});
+				model.addAttribute("errorMessage", errorMessage.get("error"));
+			} catch (Exception parseException) {
+				model.addAttribute("errorMessage", "Some error occur.");
+			}
+		} catch (Exception e) {
+			model.addAttribute("errorMessage", "Some Internal Error Occur ");
+		}
+		return "statusPage";
 	}
 
 }

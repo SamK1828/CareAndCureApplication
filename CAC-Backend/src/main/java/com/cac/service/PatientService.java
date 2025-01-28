@@ -135,10 +135,28 @@ public class PatientService {
 			updateDetails.append("- Age updated to: ").append(patient.getAge()).append("\n");
 			isUpdated = true;
 		}
-		if (!oldDetail.getInsuranceDetails().equals(patient.getInsuranceDetails())) {
-			oldDetail.setInsuranceDetails(patient.getInsuranceDetails());
-			updateDetails.append("- Insurance details updated.\n");
-			isUpdated = true;
+		if (oldDetail.getHasInsurance()) {
+			
+			if (!oldDetail.getInsurancePolicyNumber().equals(patient.getInsurancePolicyNumber())) {
+				oldDetail.setInsurancePolicyNumber(patient.getInsurancePolicyNumber());
+				updateDetails.append("- Insurance policy number updated to: ").append(patient.getInsurancePolicyNumber()).append("\n");
+				isUpdated = true;
+			}
+			if (!oldDetail.getInsuranceProvider().equals(patient.getInsuranceProvider())) {
+				oldDetail.setInsuranceProvider(patient.getInsuranceProvider());
+				updateDetails.append("- Insurance provider updated to: ").append(patient.getInsuranceProvider()).append("\n");
+				isUpdated = true;
+			}
+			if (!oldDetail.getInsuranceCoverageDetails().equals(patient.getInsuranceCoverageDetails())) {
+				oldDetail.setInsuranceCoverageDetails(patient.getInsuranceCoverageDetails());
+				updateDetails.append("- Insurance coverage details updated.\n");
+				isUpdated = true;
+			}
+			if (!oldDetail.getInsuranceExpiryDate().equals(patient.getInsuranceExpiryDate())) {
+				oldDetail.setInsuranceExpiryDate(patient.getInsuranceExpiryDate());
+				updateDetails.append("- Insurance expiry date updated to: ").append(patient.getInsuranceExpiryDate()).append("\n");
+				isUpdated = true;
+			}
 		}
 		if (!oldDetail.getGender().equals(patient.getGender())) {
 			oldDetail.setGender(patient.getGender());
@@ -160,8 +178,8 @@ public class PatientService {
 					"<p>We hope this message finds you well.</p>" +
 					"<p>This is to inform you that the following details in your Care & Cure profile have been successfully updated:</p>"
 					+
-					"<p><strong>" + updateDetails + "</strong></p>" +
-					"<p>If you did not make these changes, please contact our support team immediately at <a href='mailto:support@careandcure.com'>support@careandcure.com</a> to secure your account.</p>"
+					"<p><strong>" + updateDetails + "</strong></p><br>" +
+					"<p>If you did not make these changes, please contact our support team immediately at <a href='mailto:support@careandcure.com'>support@careandcure.com</a> to secure your account.</p><br>"
 					+
 					"<p>Thank you for choosing Care & Cure. We are committed to providing you with the best healthcare experience.</p>"
 					+
@@ -169,7 +187,11 @@ public class PatientService {
 					"The Care & Cure Team<br></p>" +
 					"</body></html>";
 
+					try{
 			emailService.sendEmail(updatedPatient.getEmailId(), subject, message);
+					} catch(Exception e){
+						e.printStackTrace();
+					}
 			return updatedPatient;
 		} else {
 			throw new IllegalArgumentException("No changes detected to update the profile.");
@@ -215,7 +237,11 @@ public class PatientService {
 		}
 
 		// Send the respective email
+		try{
 		emailService.sendEmail(updatedPatient.getEmailId(), subject, message);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 
 		return updatedPatient;
 	}

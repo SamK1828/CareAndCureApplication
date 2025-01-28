@@ -25,9 +25,20 @@ public class GlobalExceptionHandler {
 
         // Extract global errors
         ex.getBindingResult().getGlobalErrors().forEach(error -> {
-            errors.put("dateOfBirth", error.getDefaultMessage());
-        }
-        );
+            String errorMessage = error.getDefaultMessage();
+            if (errorMessage.contains("Date of Birth")) {
+                errors.put("dateOfBirth", errorMessage);
+            } else if (errorMessage.contains("Insurance")) {
+
+                String[] parts = errorMessage.split(":");
+                if (parts.length == 2) {
+                    String fieldName = parts[0].trim();
+                    String message = parts[1].trim();
+                    errors.put(fieldName, message);
+
+                }
+            }
+        });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
@@ -60,9 +71,9 @@ public class GlobalExceptionHandler {
         String errorMes = "Some internal error occur! .Try again later";
         return new ResponseEntity<>(errorMes, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(Exception ex) {   
+    public ResponseEntity<String> handleGenericException(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

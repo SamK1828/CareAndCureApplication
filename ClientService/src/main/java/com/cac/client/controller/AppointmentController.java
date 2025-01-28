@@ -194,6 +194,10 @@ public class AppointmentController {
     public String showCancelAppointment(@PathVariable int patientId,
             @PathVariable int appointmentId,
             Model model) {
+                if (!isAuthPatient(patientId)) {
+                    model.addAttribute("errorMessage", "Permission Denied. You are not authorized person");
+                    return "unauthorized";
+                }
         CancelAppointmentDTO cancelAppointmentDTO = new CancelAppointmentDTO();
         cancelAppointmentDTO.setAppointmentId(appointmentId); // Pre-fill the appointment ID
         model.addAttribute("cancelAppointmentDTO", cancelAppointmentDTO);
@@ -202,13 +206,14 @@ public class AppointmentController {
     }
 
     @PostMapping("/{patientId}/appointments/cancel/{appointmentId}")
-    public String cancelAppointment(@PathVariable Long patientId,
+    public String cancelAppointment(@PathVariable int patientId,
             @PathVariable Long appointmentId,
             @ModelAttribute CancelAppointmentDTO cancelAppointmentDTO,
             Model model) {
-        System.out.println("Cancel Request Received for Patient ID: " + patientId);
-        System.out.println("Appointment ID: " + appointmentId);
-        System.out.println("Reason: " + cancelAppointmentDTO.getReasonOfCancellation());
+                 if (!isAuthPatient(patientId)) {
+            model.addAttribute("errorMessage", "Permission Denied. You are not authorized person");
+            return "unauthorized";
+        }
 
         String url = baseUrl +"/patient/" + patientId + "/appointments/cancel";
         // String url = "http://localhost:8081/patient/" + patientId +

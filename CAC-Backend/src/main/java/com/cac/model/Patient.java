@@ -9,10 +9,13 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 import com.cac.annotations.ValidDateOfBirth;
+import com.cac.annotations.ValidInsurance;
+
 import java.time.LocalDate;
 import java.util.List;
 
 @ValidDateOfBirth
+@ValidInsurance
 @Entity
 @Table(name = "patient")
 @Getter
@@ -62,11 +65,25 @@ public class Patient {
     @Lob
     private String medications;
 
-    private String insuranceDetails;
     @Lob
     private String treatments;
 
     private Boolean isActive;
+
+     // Insurance details fields
+
+     @Column(length = 50)
+     private String insuranceProvider;
+
+     @Column(length = 20, unique = true)
+     private String insurancePolicyNumber;
+
+     private LocalDate insuranceExpiryDate;
+
+     private String insuranceCoverageDetails;
+ 
+     // The 'hasInsurance' flag indicates whether the patient has insurance
+     private Boolean hasInsurance;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // @JsonBackReference

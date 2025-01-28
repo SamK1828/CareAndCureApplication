@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <title>Patient Profile</title>
+    <title>Patient Insurance</title>
     <style>
         /* Base Reset */
         * {
@@ -42,6 +42,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -139,54 +140,49 @@
 
     <div class="profile-container">
 
-            <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
-            <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
-       
+        <div th:if="${successMessage}" class="success-message" th:text="${successMessage}"></div>
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+
         <!-- Profile Header -->
         <div class="profile-header">
-            <h1>Patient Profile</h1>
+            <h1>Patient Insurance Details</h1>
         </div>
 
         <!-- Profile Details -->
         <div class="profile-details">
             <div><strong>Patient ID:</strong> [[${patient.patientId}]]</div>
             <div><strong>Name:</strong> [[${patient.patientName}]]</div>
-            <div><strong>Age:</strong> [[${patient.age}]]</div>
-            <div><strong>Gender:</strong> [[${patient.gender}]]</div>
-            <div><strong>DOB:</strong> [[${#temporals.format(patient.dateOfBirth, 'd MMMM yyyy')}]] (<span>[[${#temporals.format(patient.dateOfBirth, 'dd/MM/yyyy')}]]</span>)<div>
-            <div><strong>Email:</strong> [[${patient.emailId}]]</div>
-            <div><strong>Phone:</strong> [[${patient.contactNumber}]]</div>
-            <div><strong>Address:</strong> [[${patient.address}]]</div>
-            <div><strong>Allergies:</strong> [[${patient.allergies}]]</div>
-            <div><strong>Medications:</strong> [[${patient.medications}]]</div>
-            <div><strong>Treatments:</strong> [[${patient.treatments}]]</div>
-            <div><strong>Insurance Details:</strong> [[${patient.insuranceDetails}]]</div>
+                    <div><strong>Email:</strong> [[${patient.emailId}]]</div>
+                    <div><strong>Phone:</strong> [[${patient.contactNumber}]]</div>
+                    <div>
+                        <strong>Status:</strong>
+                        <span th:text="${patient.isActive ? 'Active' : 'Not Active'}"></span>
+                    </div>
 
-            <div>
-                <strong>Status:</strong> 
-                <span th:text="${patient.isActive ? 'Active' : 'Not Active'}"></span>
-            </div>
-            
-        </div>
+                    <div><strong>Insurance Provider :</strong> [[${patient.insuranceProvider}]] </div>
+                    <div><strong>Insurance Policy Number :</strong> [[${patient.insurancePolicyNumber}]] </div>
+                    <div><strong>Insurance Expiry Date :</strong> [[${#temporals.format(patient.insuranceExpiryDate, 'd
+                        MMMM yyyy')}]] (<span>[[${#temporals.format(patient.insuranceExpiryDate,
+                            'dd/MM/yyyy')}]]</span>) </div>
+                    <div><strong>Insurance Coverage Details :</strong> [[${patient.insuranceCoverageDetails}]] </div>
 
-        <!-- Buttons -->
-        <div class="button-container">
-            <div th:if="${userRole=='admin'}">
-                <!-- <a th:href="@{'/deactivatePatient?patientId=' + ${patient.patientId} + '&searchType=viewProfile'}" 
+
+                </div>
+
+                <!-- Buttons -->
+                <div class="button-container">
+                    <div th:if="${userRole=='admin'}">
+                        <!-- <a th:href="@{'/deactivatePatient?patientId=' + ${patient.patientId} + '&searchType=viewProfile'}" 
                         class="edit-button">
                             <th:block th:if="${patient.isActive}">Deactivate</th:block>
                             <th:block th:unless="${patient.isActive}">Activate</th:block>
                 </a>
                 <a th:href="@{'/updatePatient?id='+${patient.patientId}}" class="edit-button">Update Profile</a>-->
 
-                <button class="back-button" onclick="history.back()">Back</button>
+                        <button class="back-button" onclick="history.back()">Back</button>
+                    </div>
+                </div>
             </div>
-            <div th:if="${userRole=='patient'}">
-                <button class="back-button" onclick="window.location.href='/patientPage'">Back</button>
-                <a th:href="@{'/updatePatient}" class="edit-button">Update Profile</a>
-            </div>
-        </div>
-    </div>
 
 </body>
 

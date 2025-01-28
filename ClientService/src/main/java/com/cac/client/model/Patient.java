@@ -16,7 +16,14 @@ public class Patient {
 	private String allergies;
 	private String medications;
 	private String treatments;
-	private String insuranceDetails;
+	
+	// Insurance details fields
+	private String insuranceProvider;
+	private String insurancePolicyNumber;
+	private LocalDate insuranceExpiryDate;
+	private String insuranceCoverageDetails;
+
+	private Boolean hasInsurance; // The 'hasInsurance' flag indicates whether the patient has insurance
 	private boolean isActive;
 
 	public int getPatientId() {
@@ -124,12 +131,44 @@ public class Patient {
 		this.isActive = isActive;
 	}
 
-	public String getInsuranceDetails() {
-		return insuranceDetails;
+	public String getInsuranceProvider() {
+		return insuranceProvider;
 	}
 
-	public void setInsuranceDetails(String insuranceDetails) {
-		this.insuranceDetails = insuranceDetails;
+	public void setInsuranceProvider(String insuranceProvider) {
+		this.insuranceProvider = insuranceProvider;
+	}
+
+	public String getInsurancePolicyNumber() {
+		return insurancePolicyNumber;
+	}
+
+	public void setInsurancePolicyNumber(String insurancePolicyNumber) {
+		this.insurancePolicyNumber = insurancePolicyNumber;
+	}
+
+	public LocalDate getInsuranceExpiryDate() {
+		return insuranceExpiryDate;
+	}
+
+	public void setInsuranceExpiryDate(LocalDate insuranceExpiryDate) {
+		this.insuranceExpiryDate = insuranceExpiryDate;
+	}
+
+	public String getInsuranceCoverageDetails() {
+		return insuranceCoverageDetails;
+	}
+
+	public void setInsuranceCoverageDetails(String insuranceCoverageDetails) {
+		this.insuranceCoverageDetails = insuranceCoverageDetails;
+	}
+
+	public Boolean getHasInsurance() {
+		return hasInsurance;
+	}
+
+	public void setHasInsurance(Boolean hasInsurance) {
+		this.hasInsurance = hasInsurance;
 	}
 
 }

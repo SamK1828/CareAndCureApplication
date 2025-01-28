@@ -172,13 +172,14 @@
 
 		<!-- Navigation Buttons -->
 		<div class="button-container">
-			<!-- <button class="next-button" th:if="${userRole == 'admin'}" th:onclick="|window.location.href='/adminPage'|">
-				Go to Admin Page
-			</button> -->
-
-			<button type="button" class="next-button" onclick="window.location.href='/patientHomePage'">
+			<button class="next-button" th:if="${userRole == 'admin'}" th:onclick="|window.location.href='/adminPage'|">
 				Home Page
 			</button>
+			
+			<button th:if="${userRole == 'patient'}" type="button" class="next-button" onclick="window.location.href='/patientPage'">
+				Home Page
+			</button>
+			<button class="next-button" onclick="history.back()">Back</button>
 		</div>
 	</div>
 </body>

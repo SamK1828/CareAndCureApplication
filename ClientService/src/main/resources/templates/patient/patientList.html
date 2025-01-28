@@ -16,7 +16,8 @@
         /* Body Styling */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #85d7f4, #d4eff7); /* Softer blue tones */
+            background: linear-gradient(135deg, #85d7f4, #d4eff7);
+            /* Softer blue tones */
             color: #333;
             padding: 20px;
         }
@@ -35,11 +36,16 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
-            background: #ffffff; /* Neutral white for simplicity */
+            background: #ffffff;
+            /* Neutral white for simplicity */
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             overflow-x: auto;
             animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .table-wrapper{
+            overflow-x: auto;
         }
 
         @keyframes fadeIn {
@@ -47,6 +53,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -69,17 +76,20 @@
         }
 
         th {
-            background: linear-gradient(135deg, #6ec6ff, #a1dffc); /* Bright light blue gradient */
+            background: linear-gradient(135deg, #6ec6ff, #a1dffc);
+            /* Bright light blue gradient */
             color: white;
             font-weight: bold;
         }
 
         tr:nth-child(even) {
-            background-color: #f9fcff; /* Subtle light blue */
+            background-color: #f9fcff;
+            /* Subtle light blue */
         }
 
         tr:hover {
-            background-color: #eaf6ff; /* Highlight row on hover */
+            background-color: #eaf6ff;
+            /* Highlight row on hover */
         }
 
         td a {
@@ -104,7 +114,8 @@
             padding: 12px 20px;
             font-size: 16px;
             font-weight: bold;
-            background: linear-gradient(135deg, #58ecdb, #41f69c); /* Soft green tones */
+            background: linear-gradient(135deg, #58ecdb, #41f69c);
+            /* Soft green tones */
             color: white;
             border: none;
             border-radius: 8px;
@@ -114,9 +125,16 @@
         }
 
         .button-container button:hover {
-            background: linear-gradient(135deg, #87f9c0, #6ddccf); /* Hover effect */
+            background: linear-gradient(135deg, #87f9c0, #6ddccf);
+            /* Hover effect */
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
 
         /* Action Buttons */
@@ -126,7 +144,8 @@
             font-size: 14px;
             font-weight: bold;
             color: white;
-            background: linear-gradient(135deg, #fece2e, #fdeb95); /* Bright yellow tones */
+            background: linear-gradient(135deg, #fece2e, #fdeb95);
+            /* Bright yellow tones */
             border: none;
             border-radius: 6px;
             cursor: pointer;
@@ -134,13 +153,15 @@
         }
 
         .next-button:hover {
-            background: linear-gradient(135deg, #f3df7a, #fbce39); /* Hover effect */
+            background: linear-gradient(135deg, #f3df7a, #fbce39);
+            /* Hover effect */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
         }
 
         /* Responsive Styles */
         @media (max-width: 768px) {
+
             th,
             td {
                 font-size: 14px;
@@ -197,36 +218,48 @@
 
     <!-- Patient List Table -->
     <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Patient ID</th>
-                    <th>Patient Name</th>
-                    <th>Email ID</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Thymeleaf Dynamic Table Rows -->
-                <tr th:each="patient : ${patientList}">
-                    <td th:text="${patient.patientId}"></td>
-                    <td th:text="${patient.patientName}"></td>
-                    <td th:text="${patient.emailId}"></td>
-                    <td>
-                        <a th:href="@{'/admin/viewPatientProfile?patientId='+${patient.patientId}}" class="next-button">view Details</a>
-                        <a th:href="@{'/updatePatient?patientId='+ ${patient.patientId}}" class="next-button">Update</a>
-                        <a th:href="@{'/deactivatePatient?patientId=' + ${patient.patientId} + '&searchType=' + ${searchType} + '&searchValue=' + ${searchValue}}" 
-                        class="next-button" th:text="${patient.isActive} ? 'Deactivate' : 'Activate'"></a>
-            </tbody>
-        </table>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient ID</th>
+                        <th>Patient Name</th>
+                        <th>Email ID</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Thymeleaf Dynamic Table Rows -->
+                    <tr th:each="patient : ${patientList}">
+                        <td th:text="${patient.patientId}"></td>
+                        <td th:text="${patient.patientName}"></td>
+                        <td th:text="${patient.emailId}"></td>
+                        <td class="action-buttons">
+                            <a th:href="@{'/admin/viewPatientProfile?patientId='+${patient.patientId}}"
+                                class="next-button">view Details</a>
+                            <a th:href="@{'/updatePatient?patientId='+ ${patient.patientId}}"
+                                class="next-button">Update</a>
+                            <a th:href="@{'/deactivatePatient?patientId=' + ${patient.patientId} + '&searchType=' + ${searchType} + '&searchValue=' + ${searchValue}}"
+                                class="next-button" th:text="${patient.isActive} ? 'Deactivate' : 'Activate'"></a>
+
+                            <a th:href="@{'/patient/'+${patient.patientId}+'/appointments'}"
+                                class="next-button">Appointment</a>
+                            <a th:if="${patient.hasInsurance}"
+                                th:href="@{'/viewPatientInsuranceDetails?patientId='+${patient.patientId}}"
+                                class="next-button">Insurance Details</a>
+
+                        </td>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Navigation Button -->
     <div class="button-container">
         <div th:if="${userRole=='admin'}">
-        <button onclick="window.location.href='/adminPage'">Home Page</button>
-        <button onclick="window.location.href='/searchPatient'">Search Page</button>
-        <button type="button" onclick="history.back()">Back</button>
+            <button onclick="window.location.href='/adminPage'">Home Page</button>
+            <button onclick="window.location.href='/searchPatient'">Search Page</button>
+            <button type="button" onclick="history.back()">Back</button>
         </div>
     </div>
 </body>
