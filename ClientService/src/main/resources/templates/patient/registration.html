@@ -415,6 +415,16 @@
             </div>
           </td>
         </tr>
+        <tr class="insuranceFields" style="display: none;">
+          <td><label for="insuranceAmountLimit">Insurance Amount Limit:</label></td>
+          <td><input type="text" id="insuranceAmountLimit" th:field="*{insuranceAmountLimit}"
+              placeholder="Enter Insurance Amount Limit" />
+            <div class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('insuranceAmountLimit')}">
+              <p th:text="${validationErrors['insuranceAmountLimit']}"></p>
+            </div>
+          </td>
+        </tr>
 
         <!-- Submit Button -->
         <tr>

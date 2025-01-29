@@ -156,7 +156,7 @@ public class AppointmentService {
 
     private void sendAppointmentConfirmationEmail(Appointment appointment) throws MessagingException {
         emailService.sendAppointmentConfirmationEmail(
-                appointment.getPatient().getEmail(),
+                appointment.getPatient().getEmailId(),
                 appointment.getPatient().getPatientName(),
                 appointment.getDoctor().getName(),
                 appointment.getAppointmentDate().toString(),
@@ -165,7 +165,7 @@ public class AppointmentService {
 
     private void sendAppointmentCancellationEmail(Appointment appointment) throws MessagingException {
         emailService.sendAppointmentCancellationEmail(
-                appointment.getPatient().getEmail(),
+                appointment.getPatient().getEmailId(),
                 appointment.getPatient().getPatientName(),
                 appointment.getDoctor().getName(),
                 appointment.getAppointmentDate().toString(),
@@ -175,7 +175,7 @@ public class AppointmentService {
 
     private void sendAppointmentRescheduleEmail(Appointment appointment) throws MessagingException {
         emailService.sendAppointmentRescheduleEmail(
-                appointment.getPatient().getEmail(),
+                appointment.getPatient().getEmailId(),
                 appointment.getPatient().getPatientName(),
                 appointment.getDoctor().getName(),
                 appointment.getAppointmentDate().toString(),

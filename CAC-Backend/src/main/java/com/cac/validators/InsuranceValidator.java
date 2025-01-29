@@ -44,6 +44,12 @@ public class InsuranceValidator implements ConstraintValidator<ValidInsurance, P
                         .addPropertyNode("insuranceCoverageDetails").addConstraintViolation();
                 valid = false;
             }
+            if (patient.getInsuranceAmountLimit() == null || patient.getInsuranceAmountLimit()<=0) {
+                context.disableDefaultConstraintViolation();
+                context.buildConstraintViolationWithTemplate("Insurance amount limit is required")
+                        .addPropertyNode("insuranceAmountLimit").addConstraintViolation();
+                valid = false;
+            }
             return valid;
         }
         return true;

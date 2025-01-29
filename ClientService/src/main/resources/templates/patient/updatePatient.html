@@ -432,55 +432,68 @@
         </tr>
 
         <!-- Insurance Details -->
+        <!-- Has Insurance Checkbox -->
+        <tr>
+          <td><label for="hasInsurance">Do you have insurance?</label></td>
+          <td>
+            <input type="checkbox" id="hasInsurance" th:field="*{hasInsurance}" onclick="toggleInsuranceFields()" />
+            <label for="hasInsurance">Insurance Details</label>
+          </td>
+        </tr>
 
-        <div th:if="${patient.hasInsurance}">
-
-          <!-- Insurance Fields-->
-          <tr class="insuranceFields">
-            <td><label for="insuranceProvider">Insurance Provider:</label></td>
-            <td><input type="text" id="insuranceProvider" th:field="*{insuranceProvider}"
-                placeholder="Enter Insurance Provider" />
-              <div class="error-message"
-                th:if="${validationErrors != null and validationErrors.containsKey('insuranceProvider')}">
-                <p th:text="${validationErrors['insuranceProvider']}"></p>
-              </div>
-            </td>
-          </tr>
-          <tr class="insuranceFields">
-            <td><label for="insurancePolicyNumber">Insurance Policy Number:</label></td>
-            <td><input type="text" id="insurancePolicyNumber" th:field="*{insurancePolicyNumber}"
-                placeholder="Enter Insurance Policy Number" />
-              <div class="error-message"
-                th:if="${validationErrors != null and validationErrors.containsKey('insurancePolicyNumber')}">
-                <p th:text="${validationErrors['insurancePolicyNumber']}"></p>
-              </div>
-            </td>
-          </tr>
-          <tr class="insuranceFields">
-            <td><label for="insuranceExpiryDate">Insurance Expiry Date:</label></td>
-            <td><input type="date" id="insuranceExpiryDate" th:field="*{insuranceExpiryDate}"
-                placeholder="Select Expiry Date" />
-              <input type="hidden" id="insuranceExpDate"
-                th:value="${#temporals.format(patient.insuranceExpiryDate, 'yyyy-MM-dd')}" />
-              <div class="error-message"
-                th:if="${validationErrors != null and validationErrors.containsKey('insuranceExpiryDate')}">
-                <p th:text="${validationErrors['insuranceExpiryDate']}"></p>
-              </div>
-            </td>
-          </tr>
-          <tr class="insuranceFields">
-            <td><label for="insuranceCoverageDetails">Insurance Coverage Details:</label></td>
-            <td><input type="text" id="insuranceCoverageDetails" th:field="*{insuranceCoverageDetails}"
-                placeholder="Enter Insurance Coverage Details" />
-              <div class="error-message"
-                th:if="${validationErrors != null and validationErrors.containsKey('insuranceCoverageDetails')}">
-                <p th:text="${validationErrors['insuranceCoverageDetails']}"></p>
-              </div>
-            </td>
-          </tr>
-
-
-        </div>
+        <!-- Insurance Fields (initially hidden) -->
+        <tr class="insuranceFields" style="display: none;">
+          <td><label for="insuranceProvider">Insurance Provider:</label></td>
+          <td><input type="text" id="insuranceProvider" th:field="*{insuranceProvider}"
+              placeholder="Enter Insurance Provider" />
+            <div class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('insuranceProvider')}">
+              <p th:text="${validationErrors['insuranceProvider']}"></p>
+            </div>
+          </td>
+        </tr>
+        <tr class="insuranceFields" style="display: none;">
+          <td><label for="insurancePolicyNumber">Insurance Policy Number:</label></td>
+          <td><input type="text" id="insurancePolicyNumber" th:field="*{insurancePolicyNumber}"
+              placeholder="Enter Insurance Policy Number" />
+            <div class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('insurancePolicyNumber')}">
+              <p th:text="${validationErrors['insurancePolicyNumber']}"></p>
+            </div>
+          </td>
+        </tr>
+        <tr class="insuranceFields" style="display: none;">
+          <td><label for="insuranceExpiryDate">Insurance Expiry Date:</label></td>
+          <td><input type="date" id="insuranceExpiryDate" th:field="*{insuranceExpiryDate}"
+              placeholder="Select Expiry Date" />
+            <input type="hidden" id="insuranceExpDate"
+              th:value="${#temporals.format(patient.insuranceExpiryDate, 'yyyy-MM-dd')}" />
+            <div class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('insuranceExpiryDate')}">
+              <p th:text="${validationErrors['insuranceExpiryDate']}"></p>
+            </div>
+          </td>
+        </tr>
+        <tr class="insuranceFields" style="display: none;">
+          <td><label for="insuranceCoverageDetails">Insurance Coverage Details:</label></td>
+          <td><input type="text" id="insuranceCoverageDetails" th:field="*{insuranceCoverageDetails}"
+              placeholder="Enter Insurance Coverage Details" />
+            <div class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('insuranceCoverageDetails')}">
+              <p th:text="${validationErrors['insuranceCoverageDetails']}"></p>
+            </div>
+          </td>
+        </tr>
+        <tr class="insuranceFields" style="display: none;">
+          <td><label for="insuranceAmountLimit">Insurance Amount Limit:</label></td>
+          <td><input type="text" id="insuranceAmountLimit" th:field="*{insuranceAmountLimit}"
+              placeholder="Enter Insurance Amount Limit" />
+            <div class="error-message"
+              th:if="${validationErrors != null and validationErrors.containsKey('insuranceAmountLimit')}">
+              <p th:text="${validationErrors['insuranceAmountLimit']}"></p>
+            </div>
+          </td>
+        </tr>
 
         <!-- Submit Button -->
 
@@ -535,6 +548,30 @@
       minDate: "today",
       defaultDate: insuranceExpiryDate,
     });
+
+
+    function toggleInsuranceFields() {
+      var insuranceFields = document.getElementsByClassName("insuranceFields");
+      var hasInsuranceCheckbox = document.getElementById("hasInsurance");
+
+      // Loop through all the insurance fields and set their display style
+      for (var i = 0; i < insuranceFields.length; i++) {
+        if (hasInsuranceCheckbox.checked) {
+          insuranceFields[i].style.display = "table-row";  // Show insurance fields
+        } else {
+          insuranceFields[i].style.display = "none";  // Hide insurance fields
+        }
+      }
+    }
+
+    // Keep insurance fields visible if there are validation errors and checkbox is checked
+    window.onload = function () {
+      var hasInsuranceCheckbox = document.getElementById("hasInsurance");
+      if (hasInsuranceCheckbox.checked) {
+        toggleInsuranceFields();
+      }
+    };
+
 
 
   </script>

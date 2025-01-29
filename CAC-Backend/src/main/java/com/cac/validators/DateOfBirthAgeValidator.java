@@ -17,52 +17,48 @@ public class DateOfBirthAgeValidator implements ConstraintValidator<ValidDateOfB
             return true; // Default behavior for null objects; validation will pass.
         }
 
-        // LocalDate dateOfBirth = patient.getDateOfBirth();
-        // Integer age = patient.getAge(); // Change `int` to `Integer` for nullable checks
+        LocalDate dateOfBirth = patient.getDateOfBirth();
+        Integer age = patient.getAge(); // Change `int` to `Integer` for nullable checks
 
-        // if (dateOfBirth == null) {
-        //     // Disable default message and add a custom message
-        //     context.disableDefaultConstraintViolation();
-        //     context.buildConstraintViolationWithTemplate("Date of birth must be required")
-        //            .addConstraintViolation();
-        //     return false;
-        // }
+        if (dateOfBirth == null) {
+            // Disable default message and add a custom message
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Date of birth must be required")
+                    .addPropertyNode("dateOfBirth").addConstraintViolation();
+            return false;
+        }
 
-        // LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.now();
 
-        // // Check if dateOfBirth is in the future
-        // if (dateOfBirth.isAfter(currentDate)) {
-        //     context.disableDefaultConstraintViolation();
-        //     context.buildConstraintViolationWithTemplate("Date of birth must be valid")
-        //            .addConstraintViolation();
-        //     return false;
-        // }
+        // Check if dateOfBirth is in the future
+        if (dateOfBirth.isAfter(currentDate)) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Date of birth must be valid")
+                    .addConstraintViolation();
+            return false;
+        }
 
-        // // Calculate age from dateOfBirth
+        // Calculate age from dateOfBirth
         // int calculatedAge = currentDate.getYear()-dateOfBirth.getYear();
 
         // if (calculatedAge < age) {
-        //     context.disableDefaultConstraintViolation();
-        //     context.buildConstraintViolationWithTemplate("Age mismatched with date of birth")
-        //            .addConstraintViolation();
-        //     return false;
+        // context.disableDefaultConstraintViolation();
+        // context.buildConstraintViolationWithTemplate("Age mismatched with date of
+        // birth")
+        // .addConstraintViolation();
+        // return false;
         // }
 
-        // return true;
+        Period ageDifference = Period.between(dateOfBirth, currentDate);
+        int calculatedAge = ageDifference.getYears();
 
-        if (patient.getDateOfBirth() != null) {
-            LocalDate dob = patient.getDateOfBirth();
-            // Add your validation logic here, e.g., check if DOB is in the past
-            if (dob.isBefore(LocalDate.now())) {
-                return true;
-            } else {
-                context.disableDefaultConstraintViolation();
-                context.buildConstraintViolationWithTemplate("Date of Birth must be in the past")
-                        .addPropertyNode("dateOfBirth").addConstraintViolation();
-                return false;
-            }
+        if (calculatedAge < age) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate("Invalid Date of Birth or Age")
+                    .addConstraintViolation();
+            return false;
         }
         return true;
+
     }
 }
-

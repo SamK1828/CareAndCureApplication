@@ -68,37 +68,28 @@ public class Patient {
     @Lob
     private String treatments;
 
-    private Boolean isActive;
+    private boolean isActive;
 
-     // Insurance details fields
+    // Insurance details fields
 
-     @Column(length = 50)
-     private String insuranceProvider;
+    // The 'hasInsurance' flag indicates whether the patient has insurance
+    private Boolean hasInsurance = false;
 
-     @Column(length = 20, unique = true)
-     private String insurancePolicyNumber;
+    @Column(length = 50)
+    private String insuranceProvider;
 
-     private LocalDate insuranceExpiryDate;
+    @Column(length = 20, unique = true)
+    private String insurancePolicyNumber;
 
-     private String insuranceCoverageDetails;
- 
-     // The 'hasInsurance' flag indicates whether the patient has insurance
-     private Boolean hasInsurance;
+    private LocalDate insuranceExpiryDate;
+
+    private String insuranceCoverageDetails;
+
+    // Insurance amount limit
+    private Double insuranceAmountLimit;
 
     @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // @JsonBackReference
     @JsonIgnore
     private List<Appointment> appointments;
-
-    public String getEmail() {
-        return this.emailId;
-    }
-
-    public void setActive(boolean active) {
-        this.isActive = active;
-    }
-
-    public boolean isActive() {
-        return this.isActive;
-    }
 }

@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
 @RequestMapping("/api/patient")
 // @CrossOrigin(origins = "http://localhost:8081")
@@ -94,4 +95,11 @@ public class PatientController {
         }
         return ResponseEntity.notFound().build();
     }
+
+	//get patient lisit by insuranceprovider
+	@GetMapping("/viewAllByInsuranceProvider")
+	public ResponseEntity<List<Patient>> getPatientsByInsuranceProvider(@RequestParam String insuranceProvider) {
+		return new ResponseEntity<>(patientService.getPatientsByInsuranceProvider(insuranceProvider), HttpStatus.OK);
+	}
+	
 }

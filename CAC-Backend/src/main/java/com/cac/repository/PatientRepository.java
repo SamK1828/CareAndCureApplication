@@ -20,6 +20,8 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
 	
 	List<Patient> findByIsActive(boolean active);
 
+    List<Patient> findByInsuranceProviderContainingAllIgnoreCase(String insuranceProvider);
+
     
     
 }

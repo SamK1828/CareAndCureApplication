@@ -46,9 +46,7 @@ public class PatientService {
 		try {
 			emailService.sendPatientWelcomeEmail(savedPatient);
 		} catch (MessagingException | MailSendException e) {
-			// userService.deleteUser(userInfo);
-			// patientRepository.delete(savedPatient);
-			throw new MailSendException("Failed to send Message");
+			e.printStackTrace();
 
 		}
 
@@ -135,29 +133,43 @@ public class PatientService {
 			updateDetails.append("- Age updated to: ").append(patient.getAge()).append("\n");
 			isUpdated = true;
 		}
-		if (oldDetail.getHasInsurance()) {
-			
-			if (!oldDetail.getInsurancePolicyNumber().equals(patient.getInsurancePolicyNumber())) {
-				oldDetail.setInsurancePolicyNumber(patient.getInsurancePolicyNumber());
-				updateDetails.append("- Insurance policy number updated to: ").append(patient.getInsurancePolicyNumber()).append("\n");
-				isUpdated = true;
+		if (oldDetail.getHasInsurance() || patient.getHasInsurance()!=oldDetail.getHasInsurance()) {
+				oldDetail.setHasInsurance(patient.getHasInsurance());
+				if (oldDetail.getInsurancePolicyNumber() == null
+						|| !oldDetail.getInsurancePolicyNumber().equals(patient.getInsurancePolicyNumber())) {
+					oldDetail.setInsurancePolicyNumber(patient.getInsurancePolicyNumber());
+					updateDetails.append("- Insurance policy number updated to: ")
+							.append(patient.getInsurancePolicyNumber()).append("\n");
+					isUpdated = true;
+				}
+				if (oldDetail.getInsuranceProvider() == null
+						|| !oldDetail.getInsuranceProvider().equals(patient.getInsuranceProvider())) {
+					oldDetail.setInsuranceProvider(patient.getInsuranceProvider());
+					updateDetails.append("- Insurance provider updated to: ").append(patient.getInsuranceProvider())
+							.append("\n");
+					isUpdated = true;
+				}
+				if (oldDetail.getInsuranceCoverageDetails() == null
+						|| !oldDetail.getInsuranceCoverageDetails().equals(patient.getInsuranceCoverageDetails())) {
+					oldDetail.setInsuranceCoverageDetails(patient.getInsuranceCoverageDetails());
+					updateDetails.append("- Insurance coverage details updated.\n");
+					isUpdated = true;
+				}
+				if (oldDetail.getInsuranceExpiryDate() == null
+						|| !oldDetail.getInsuranceExpiryDate().equals(patient.getInsuranceExpiryDate())) {
+					oldDetail.setInsuranceExpiryDate(patient.getInsuranceExpiryDate());
+					updateDetails.append("- Insurance expiry date updated to: ")
+							.append(patient.getInsuranceExpiryDate()).append("\n");
+					isUpdated = true;
+				}
+				if (oldDetail.getInsuranceAmountLimit() == null
+						|| !oldDetail.getInsuranceAmountLimit().equals(patient.getInsuranceAmountLimit())) {
+					oldDetail.setInsuranceAmountLimit(patient.getInsuranceAmountLimit());
+					updateDetails.append("- Insurance amount limit updated to: ")
+							.append(patient.getInsuranceAmountLimit()).append("\n");
+					isUpdated = true;
+				}
 			}
-			if (!oldDetail.getInsuranceProvider().equals(patient.getInsuranceProvider())) {
-				oldDetail.setInsuranceProvider(patient.getInsuranceProvider());
-				updateDetails.append("- Insurance provider updated to: ").append(patient.getInsuranceProvider()).append("\n");
-				isUpdated = true;
-			}
-			if (!oldDetail.getInsuranceCoverageDetails().equals(patient.getInsuranceCoverageDetails())) {
-				oldDetail.setInsuranceCoverageDetails(patient.getInsuranceCoverageDetails());
-				updateDetails.append("- Insurance coverage details updated.\n");
-				isUpdated = true;
-			}
-			if (!oldDetail.getInsuranceExpiryDate().equals(patient.getInsuranceExpiryDate())) {
-				oldDetail.setInsuranceExpiryDate(patient.getInsuranceExpiryDate());
-				updateDetails.append("- Insurance expiry date updated to: ").append(patient.getInsuranceExpiryDate()).append("\n");
-				isUpdated = true;
-			}
-		}
 		if (!oldDetail.getGender().equals(patient.getGender())) {
 			oldDetail.setGender(patient.getGender());
 			updateDetails.append("- Gender details updated.\n");
@@ -187,11 +199,11 @@ public class PatientService {
 					"The Care & Cure Team<br></p>" +
 					"</body></html>";
 
-					try{
-			emailService.sendEmail(updatedPatient.getEmailId(), subject, message);
-					} catch(Exception e){
-						e.printStackTrace();
-					}
+			try {
+				emailService.sendEmail(updatedPatient.getEmailId(), subject, message);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return updatedPatient;
 		} else {
 			throw new IllegalArgumentException("No changes detected to update the profile.");
@@ -237,9 +249,9 @@ public class PatientService {
 		}
 
 		// Send the respective email
-		try{
-		emailService.sendEmail(updatedPatient.getEmailId(), subject, message);
-		}catch(Exception e) {
+		try {
+			emailService.sendEmail(updatedPatient.getEmailId(), subject, message);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -259,5 +271,10 @@ public class PatientService {
 	// Get patient details for display
 	public Optional<Patient> getPatientDetailsForDisplay(int patientId) {
 		return patientRepository.findById(patientId);
+	}
+
+	//Get Patient by insurance provider 
+	public List<Patient> getPatientsByInsuranceProvider(String provider){
+		return patientRepository.findByInsuranceProviderContainingAllIgnoreCase(provider);
 	}
 }

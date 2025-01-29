@@ -509,4 +509,36 @@ public class PatientClientController {
 		return "statusPage";
 	}
 
+	//Get PatientList by InsuranceProvider
+	@GetMapping("/viewAllPatientByInsuranceProvider")
+	public String getMethodName(@RequestParam String insuranceProvider, Model model) {
+		if(role==null || !role.equalsIgnoreCase("admin")) return "unauthorized";
+		List<Patient> patientList = new ArrayList<>();
+		String url = baseUrl + "/api/patient/viewAllByInsuranceProvider?insuranceProvider=" + insuranceProvider;
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Content-Type", "application/json");
+		HttpEntity<List<Patient>> requestEntity = new HttpEntity<>(null, headers);
+		try {
+			ResponseEntity<List<Patient>> response = restTemplate.exchange(
+					url,
+					HttpMethod.GET,
+					requestEntity,
+					new ParameterizedTypeReference<List<Patient>>() {
+					});
+			patientList = response.getBody();
+		} catch (HttpClientErrorException | HttpServerErrorException e) {
+			model.addAttribute("errorMessage", "Unable to fetch Patient List. Please try again later.");
+			return "patient/patientListByInsuranceProvider";
+		}
+
+		if (patientList != null && patientList.size() != 0) {
+			model.addAttribute("patientList", patientList);
+			return "patient/patientListByInsuranceProvider";
+		} else {
+			model.addAttribute("errorMessage", "No Patient Record Found with Insurance Provider "+insuranceProvider);
+			return "patient/patientListByInsuranceProvider";
+		}
+	}
+	
+
 }

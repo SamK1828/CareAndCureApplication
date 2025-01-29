@@ -172,6 +172,7 @@
             <option value="name">Name</option>
             <option value="id">ID</option>
             <option value="status">Status</option>
+            <option value="insuranceProvider">Insurance Provider</option>
         </select>
     </div>
 
@@ -206,14 +207,25 @@
         </form>
     </div>
 
+    <!-- Form to Search by Insurance Provider -->
+    <div id="searchByInsuranceForm" class="form-container" style="display: none;">
+        <form th:action="@{/viewAllPatientByInsuranceProvider}" th:method="get">
+            <label for="insuranceProvider">Search By Insurance Provider:</label>
+            <input type="text" id="id" name="insuranceProvider" placeholder="Enter Insurance Provider Name" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+
+
     <!-- Navigation Button -->
     <div class="button-container">
-        <div th:if="${userRole}=='admin'">
+        <div th:if="${userRole=='admin'}">
         <button onclick="window.location.href='/adminPage'">Go to Home Page</button>
         </div>
-        <div th:if="${userRole}=='patient'">
+        <!-- <div th:if="${userRole}=='patient'">
             <button onclick="window.location.href='/patientPage'">Go to Home Page</button>
-        </div>
+        </div> -->
     </div>
    
 
@@ -225,23 +237,34 @@
             const nameForm = document.getElementById("searchByNameForm");
             const idForm = document.getElementById("searchByIdForm");
             const statusForm = document.getElementById("searchByStatusForm");
+            const insuranceForm = document.getElementById("searchByInsuranceForm");
 
             if (searchBy === "name") {
                 nameForm.style.display = "block";
                 statusForm.style.display="none";
                 idForm.style.display = "none";
+                insuranceForm.style.display = "none";
             } else if (searchBy === "id") {
                 nameForm.style.display = "none";
                 statusForm.style.display="none";
+                insuranceForm.style.display = "none";
                 idForm.style.display = "block";
             }  else if (searchBy === "status") {
                 nameForm.style.display = "none";
                 idForm.style.display = "none";
+                insuranceForm.style.display = "none";
                 statusForm.style.display="block";
-            }else {
+            } else if (searchBy === "insuranceProvider") {
+                nameForm.style.display = "none";
+                idForm.style.display = "none";
+                insuranceForm.style.display = "block";
+                statusForm.style.display="none";
+            }
+            else {
                 nameForm.style.display = "none";
                 idForm.style.display = "none";
                 statusForm.style.display="none";
+                insuranceForm.style.display = "none";
             }
         }
     </script>

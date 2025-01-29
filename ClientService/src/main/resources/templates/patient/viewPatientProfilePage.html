@@ -160,7 +160,7 @@
             <div><strong>Allergies:</strong> [[${patient.allergies}]]</div>
             <div><strong>Medications:</strong> [[${patient.medications}]]</div>
             <div><strong>Treatments:</strong> [[${patient.treatments}]]</div>
-            <div><strong>Has Insurance ? : </strong>[[${patient.hasInsurance}]]</div>
+            <div><strong>Has Insurance ? : </strong><span th:text="${patient.hasInsurance ? 'Yes' : 'No Insurance'}"></span></div>
 
             <div>
                 <strong>Status:</strong> 
@@ -172,6 +172,7 @@
                 <p><strong>Insurance Policy Number :</strong> [[${patient.insurancePolicyNumber}]] </p>
                 <p><strong>Insurance Expiry Date :</strong> [[${#temporals.format(patient.insuranceExpiryDate, 'd MMMM yyyy')}]] (<span>[[${#temporals.format(patient.insuranceExpiryDate, 'dd/MM/yyyy')}]]</span>) </p>
                 <p><strong>Insurance Coverage Details :</strong> [[${patient.insuranceCoverageDetails}]] </p>
+                <p><strong>Insurance Amount Limit :</strong> [[${patient.insuranceAmountLimit}]] </p>
             </div>
             
         </div>
